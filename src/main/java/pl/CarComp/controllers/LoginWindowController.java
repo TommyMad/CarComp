@@ -1,7 +1,5 @@
 package pl.CarComp.controllers;
 
-import java.util.Optional;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import pl.CarComp.utils.DialogWindows;
+
+import java.util.Optional;
 
 public class LoginWindowController {
 

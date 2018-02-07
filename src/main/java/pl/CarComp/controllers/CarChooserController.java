@@ -7,9 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import pl.CarComp.modelFX.*;
 import pl.CarComp.modelFXControler.*;
 import pl.CarComp.utils.DialogWindows;
@@ -30,8 +28,6 @@ public class CarChooserController {
     private VersionsFXcontroller versionsFXcontroller;
 
 
-    @FXML
-    private Tab brandTab, modelTab, engineTab, versionTab;
     @FXML
     private TabPane mainTabPane;
     @FXML
@@ -137,43 +133,22 @@ public class CarChooserController {
 
     // button Select car
     @FXML
-    public void setSelected(ActionEvent event) {
+    public void setSelected(ActionEvent e) {
         try {
             mainController2.setCenter(FXML_CAR_COMPARE_WINDOW_FXML);
-
-            // mainController2.setCenter("/fxml/carCompareWindow.fxml");
-
         } catch (Exception exc) {
             DialogWindows.errorDialog(exc.getMessage());
             System.out.println(exc);
         }
         // hiding this window after click button
-        ((Node) (event.getSource())).getScene().getWindow().hide();
+        ((Node) (e.getSource())).getScene().getWindow().hide();
     }
-
-    /* list of brands, models,engines etc.
-    ObservableList<String> brandsList = FXCollections.observableArrayList("Fiat", "Ford", "");
-    ObservableList<String> modelsList = FXCollections.observableArrayList("Fiat", "Ford", "");
-    ObservableList<String> fuelsList = FXCollections.observableArrayList("Fiat", "Ford");
-    ObservableList<String> capacitiesList = FXCollections.observableArrayList("Fiat", "Ford");
-    ObservableList<String> versionsList = FXCollections.observableArrayList("lux", "fux");
-    ObservableSet<Label> labelsList = FXCollections.observableSet(brandLabel, modelLabel, fuelLabel, capacityLabel,
-	    versionLabel);
-    */
 
     @FXML
     public void initialize() {
-    /*
-     * brandChoiceComboBox.setItems(brandsList);
-	modelChoiceComboBox.setItems(modelsList);
-	fuelChoiceComboBox.setItems(fuelsList);
-	capacityChoiceComboBox.setItems(capacitiesList);
-	versionChoiceComboBox.setItems(versionsList);
-	*/
         nextTabButton1.setDisable(true);
         nextTabButton2.setDisable(true);
         nextTabButton3.setDisable(true);
-
 
 	/*
       * init ** FX controllers and methods from it

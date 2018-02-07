@@ -43,6 +43,17 @@ public class DialogWindows {
 	errorAlert.getDialogPane().setContent(textAreaError);
 	textAreaError.setEditable(false);
 	errorAlert.showAndWait();
-
     }
+    //warning message window
+	public static void warningDialog(String warn) {
+		Alert infoAlert = new Alert(AlertType.WARNING);
+		infoAlert.setTitle("Błąd");
+		infoAlert.setHeaderText("Uwaga, możesz maksymalnie porówmać 6 pojazdów!");
+
+		TextArea textAreaWarning = new TextArea(warn);
+		infoAlert.getDialogPane().setContent(textAreaWarning);
+		textAreaWarning.setEditable(false);
+		infoAlert.showAndWait();
+	}
+
 }

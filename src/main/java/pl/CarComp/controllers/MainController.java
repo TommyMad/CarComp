@@ -1,9 +1,6 @@
 package pl.CarComp.controllers;
 
-import java.util.Optional;
-
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +13,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pl.CarComp.utils.DialogWindows;
 
+import java.util.Optional;
+
 public class MainController {
 
     public static final String FXML_CAR_ADD_WINDOW_FXML = "/fxml/carAddWindow.fxml";
@@ -25,24 +24,22 @@ public class MainController {
 
     @FXML
     private LoginWindowController loginWelcomeWindowController;
-
     @FXML
     private CarChooserController mainTabPaneController;
     @FXML
     private CarAddController carAddController;
-
     @FXML
     private MenuBar mainMenuBar;
 
     @FXML
-    public void openCarChooser(ActionEvent event) {
+    public void openCarChooser() {
         // open car chooser window
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(FXML_CAR_CHOOSE_WINDOW_FXML));
 
             Stage stage = new Stage();
 
-            BorderPane tabPaneChooser = (BorderPane) loader.load();
+            BorderPane tabPaneChooser = loader.load();
             stage.setTitle("Wybierz pojazd");
             stage.initStyle(StageStyle.UTILITY);
             stage.setResizable(false);
@@ -76,6 +73,7 @@ public class MainController {
     @FXML
     private void initialize() {
         CarChooserController.setMainController(this);
+
     }
 
     // method to add fxml to center
@@ -84,6 +82,9 @@ public class MainController {
         Parent parent = null;
         try {
             parent = loader.load();
+            //set name of chosen car to compare
+            CarCompareController carCompareController=loader.getController();
+            carCompareController.setSelectedCarLabel("test");
         } catch (Exception ex) {
             DialogWindows.errorDialog(ex.getMessage());
             System.out.println(ex);
