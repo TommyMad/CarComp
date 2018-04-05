@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainBorderP" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.CarComp.controllers.MainController">
+<BorderPane fx:id="mainBorderP" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.CarComp.controllers.MainController">
    <top>
       <AnchorPane prefHeight="68.0" prefWidth="700.0" BorderPane.alignment="CENTER">
          <children>
@@ -34,16 +34,19 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <ToolBar layoutY="28.0" prefHeight="50.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-              <items>
-                <Button mnemonicParsing="false" text="Nowe" />
-                  <Button mnemonicParsing="false" text="Wygląd" />
-                  <Button mnemonicParsing="false" text="Info" />
-                  <Button mnemonicParsing="false" text="Drukuj" />
-                  <Button mnemonicParsing="false" text="Zapisz" />
-                  <Button mnemonicParsing="false" onAction="#openAddCarToBase" text="Dodaj do bazy" />
-              </items>
-            </ToolBar>
+            <VBox layoutY="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <ToolBar prefHeight="50.0" prefWidth="700.0">
+                    <items>
+                      <Button mnemonicParsing="false" onAction="#setComparisiontoDefault" text="Nowe" />
+                        <Button mnemonicParsing="false" text="Wygląd" />
+                        <Button mnemonicParsing="false" text="Info" />
+                        <Button mnemonicParsing="false" text="Zapisz" />
+                        <Button mnemonicParsing="false" onAction="#openAddCarToBase" text="Dodaj do bazy" />
+                    </items>
+                  </ToolBar>
+               </children>
+            </VBox>
          </children>
       </AnchorPane>
    </top>
@@ -54,19 +57,18 @@
                <children>
                   <VBox layoutY="16.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Dodaj kolejny" />
-                     </children>
-                  </VBox>
+                        <Button fx:id="addNextCarButton" mnemonicParsing="false" onAction="#addNextCar" text="Dodaj kolejny" />
+                     </children></VBox>
                </children>
             </AnchorPane>
          </items>
       </SplitPane>
    </left>
    <center>
-      <AnchorPane>
+      <AnchorPane fx:id="centerPane">
          <children>
-            <ImageView fitHeight="542.0" fitWidth="720.0" pickOnBounds="true" preserveRatio="true" />
-            <Button layoutX="334.0" layoutY="40.0" mnemonicParsing="false" onAction="#openCarChooser" text="Porównaj" />
+            <ImageView fitHeight="657.0" fitWidth="960.0" pickOnBounds="true" preserveRatio="true" />
+            <Button layoutX="447.0" layoutY="60.0" mnemonicParsing="false" onAction="#openCarChooserWindow" text="Porównaj" />
          </children>
       </AnchorPane>
    

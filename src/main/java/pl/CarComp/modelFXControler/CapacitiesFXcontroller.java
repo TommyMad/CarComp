@@ -4,10 +4,17 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import pl.CarComp.database.dao.CarBrandDao;
 import pl.CarComp.database.dao.CarCapacityDao;
+import pl.CarComp.database.dao.CarFuelDao;
+import pl.CarComp.database.dao.CarModelDao;
 import pl.CarComp.database.dbUtils.DBManager;
+import pl.CarComp.database.models.CarBrand;
 import pl.CarComp.database.models.CarCapacity;
+import pl.CarComp.database.models.CarFuel;
+import pl.CarComp.database.models.CarModel;
 import pl.CarComp.modelFX.CapacitiesFX;
+import pl.CarComp.utils.converters.ConverterCapacity;
 import pl.CarComp.utils.exceptions.ApplicationException;
 
 import java.util.List;
@@ -15,18 +22,30 @@ import java.util.List;
 public class CapacitiesFXcontroller {
     private ObservableList<CapacitiesFX> capacityList = FXCollections.observableArrayList();
     private ObjectProperty<CapacitiesFX> capacityListItem = new SimpleObjectProperty<>();
+    private ObjectProperty<CapacitiesFX>capacitiesFXObjectProperty=new SimpleObjectProperty<>(new CapacitiesFX());
 
     // method saving to database f.ex. after clicking button
-    public void saveCapacityInDatabase(String capacity) throws ApplicationException {
+    public void saveCapacityInDatabase() throws ApplicationException {
+        CarCapacity carCapacity = ConverterCapacity.convertToCapacity(this.getCapacitiesFXObjectProperty());
         CarCapacityDao carCapacityDao = new CarCapacityDao(DBManager.getConnectionSource());
-        // car Brand from database models
-        CarCapacity carCapacity = new CarCapacity();
-        carCapacity.setCapacity(capacity);
+
+        //initialize foreign dao to find match
+        CarBrandDao carBrandDao = new CarBrandDao(DBManager.getConnectionSource());
+        CarBrand tempCarBrand = carBrandDao.findById(CarBrand.class, this.getCapacitiesFXObjectProperty().getBrandsFXObjectProperty().getId());
+        CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
+        CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getCapacitiesFXObjectProperty().getModelsFXObjectProperty().getId());
+        CarFuelDao carFuelDao=new CarFuelDao(DBManager.getConnectionSource());
+        CarFuel tempCarFuel=carFuelDao.findById(CarFuel.class, this.getCapacitiesFXObjectProperty().getFuelsFXObjectProperty().getId());
+
+        // set foreign and normal data
+        carCapacity.setBrand(tempCarBrand);
+        carCapacity.setModel(tempCarModel);
+        carCapacity.setFuel(tempCarFuel);
+        carCapacity.setCapacity(getCapacitiesFXObjectProperty().getCapacity());
         carCapacityDao.createOrUpdate(carCapacity);
         DBManager.closeConnectionSource();
         initializeCapacitiesList();
-        //debug
-        System.out.println("Po zapisie w bazie, capacityFX controller " + carCapacity.toString());
+
     }
 
     // initialize list of brands
@@ -63,6 +82,14 @@ public class CapacitiesFXcontroller {
 
     public void setCapacityListItem(CapacitiesFX capacityListItem) {
         this.capacityListItem.set(capacityListItem);
+    }
+
+    public CapacitiesFX getCapacitiesFXObjectProperty() {
+        return capacitiesFXObjectProperty.get();
+    }
+
+    public ObjectProperty<CapacitiesFX> capacitiesFXObjectPropertyProperty() {
+        return capacitiesFXObjectProperty;
     }
 }
 

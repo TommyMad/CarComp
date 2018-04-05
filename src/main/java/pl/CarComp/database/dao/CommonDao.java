@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.support.ConnectionSource;
 
 import javafx.beans.property.IntegerProperty;
@@ -112,4 +113,25 @@ public abstract class CommonDao {
         //return null;
     }
 
+    //testing
+    public <T extends BaseModel, I> List<T> queryForMatching(Class<T> cls, Object obj) throws ApplicationException {
+        try {
+            Dao<T, I> dao = getDao(cls);
+
+            return dao.queryForMatching((T) obj);
+        } catch (SQLException e) {
+            System.out.println(e.getCause().getMessage());
+            throw new ApplicationException("Problem");
+        }
+    }
+    /*public <T extends BaseModel, I> List<T> queryForEq(Class<T> cls,String string) throws ApplicationException {
+        try {
+            Dao<T, I> dao = getDao(cls);
+
+            return dao.queryForEq();
+        } catch (SQLException e) {
+            System.out.println(e.getCause().getMessage());
+            throw new ApplicationException("Problem");
+        }
+    }*/
 }

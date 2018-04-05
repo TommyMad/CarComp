@@ -5,22 +5,25 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "fuel_table")
 public class CarFuel implements BaseModel {
-    public CarFuel() {
 
+    public static final String FOREIGN_BRAND_ID = "FOREIGN_BRAND_ID";
+    public static final String FOREIGN_MODEL_ID = "FOREIGN_MODEL_ID";
+    public static final String FOREIGN_CAPACITY_ID = "FOREIGN_CAPACITY_ID";
+
+    public CarFuel() {
     }
 
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = "BRAND_ID", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
+    @DatabaseField(columnName = FOREIGN_BRAND_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarBrand brand;
 
-    @DatabaseField(columnName = "MODEL_ID", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
+    @DatabaseField(columnName = FOREIGN_MODEL_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarModel model;
 
-    @DatabaseField(columnName = "CAPACITY_ID", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
+    @DatabaseField(columnName = FOREIGN_CAPACITY_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
     private CarCapacity capacity;
-
 
     @DatabaseField(columnName = "FUEL", canBeNull = false,unique = true)
     private String fuel;
@@ -64,4 +67,5 @@ public class CarFuel implements BaseModel {
     public void setFuel(String fuel) {
         this.fuel = fuel;
     }
+
 }

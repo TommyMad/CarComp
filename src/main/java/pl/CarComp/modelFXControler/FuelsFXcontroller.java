@@ -5,10 +5,15 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import pl.CarComp.database.dao.CarBrandDao;
 import pl.CarComp.database.dao.CarFuelDao;
+import pl.CarComp.database.dao.CarModelDao;
 import pl.CarComp.database.dbUtils.DBManager;
+import pl.CarComp.database.models.CarBrand;
 import pl.CarComp.database.models.CarFuel;
+import pl.CarComp.database.models.CarModel;
 import pl.CarComp.modelFX.FuelsFX;
+import pl.CarComp.utils.converters.ConverterFuel;
 import pl.CarComp.utils.exceptions.ApplicationException;
 
 import java.util.List;
@@ -18,17 +23,26 @@ public class FuelsFXcontroller {
     // single item of fuels list
     private ObjectProperty<FuelsFX> fuelsListItem = new SimpleObjectProperty<>();
 
+    private ObjectProperty<FuelsFX> fuelsFXObjectProperty = new SimpleObjectProperty<>(new FuelsFX());
+
     // method saving to database f.ex. after clicking button
-    public void saveFuelInDatabase(String fuel) throws ApplicationException {
+    public void saveFuelInDatabase() throws ApplicationException {
+        CarFuel carFuel = ConverterFuel.convertToFuel(this.getFuelsFXObjectProperty());
         CarFuelDao carFuelDao = new CarFuelDao(DBManager.getConnectionSource());
-        // car Fuel from database models
-        CarFuel carFuel = new CarFuel();
-        carFuel.setFuel(fuel);
+
+        //initialize foreign dao to find match
+        CarBrandDao carBrandDao = new CarBrandDao(DBManager.getConnectionSource());
+        CarBrand tempCarBrand = carBrandDao.findById(CarBrand.class, this.getFuelsFXObjectProperty().getBrandsFXObjectProperty().getId());
+        CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
+        CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getFuelsFXObjectProperty().getModelsFXObjectProperty().getId());
+
+        // set foreign and normal data
+        carFuel.setBrand(tempCarBrand);
+        carFuel.setModel(tempCarModel);
+        carFuel.setFuel(getFuelsFXObjectProperty().getFuel());
         carFuelDao.createOrUpdate(carFuel);
         DBManager.closeConnectionSource();
         initializeFuelsList();
-        //debug
-        System.out.println("Po zapisie w bazie, fuelsfx controller "+carFuel.toString());
     }
 
     // initialize list of fuels
@@ -46,7 +60,7 @@ public class FuelsFXcontroller {
         });
         DBManager.closeConnectionSource();
 
-}
+    }
 
     public ObservableList<FuelsFX> getFuelsList() {
         return fuelsList;
@@ -66,5 +80,17 @@ public class FuelsFXcontroller {
 
     public void setFuelsListItem(FuelsFX fuelsListItem) {
         this.fuelsListItem.set(fuelsListItem);
+    }
+
+    public FuelsFX getFuelsFXObjectProperty() {
+        return fuelsFXObjectProperty.get();
+    }
+
+    public ObjectProperty<FuelsFX> fuelsFXObjectPropertyProperty() {
+        return fuelsFXObjectProperty;
+    }
+
+    public void setFuelsFXObjectProperty(FuelsFX fuelsFXObjectProperty) {
+        this.fuelsFXObjectProperty.set(fuelsFXObjectProperty);
     }
 }

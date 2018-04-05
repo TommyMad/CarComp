@@ -5,6 +5,12 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "version_table")
 public class CarVersion implements BaseModel {
+
+    public static final String FOREIGN_BRAND_ID = "FOREIGN_BRAND_ID";
+    public static final String FOREIGN_MODEL_ID = "FOREIGN_MODEL_ID";
+    public static final String FOREIGN_CAPACITY_ID = "FOREIGN_CAPACITY_ID";
+    public static final String FOREIGN_FUEL_ID = "FOREIGN_FUEL_ID";
+
     public CarVersion() {
 
     }
@@ -12,14 +18,16 @@ public class CarVersion implements BaseModel {
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = "BRAND_ID", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
+    @DatabaseField(columnName = FOREIGN_BRAND_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarBrand brand;
 
-    @DatabaseField(columnName = "MODEL_ID", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
+    @DatabaseField(columnName = FOREIGN_MODEL_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarModel model;
 
-    @DatabaseField(columnName = "CAPACITY_ID", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
+    @DatabaseField(columnName = FOREIGN_CAPACITY_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarCapacity capacity;
+    @DatabaseField(columnName = FOREIGN_FUEL_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
+    private CarFuel fuel;
 
     @DatabaseField(columnName = "VERSION", canBeNull = false,unique = true)
     private String version;
@@ -63,4 +71,12 @@ public class CarVersion implements BaseModel {
     public void setVersion(String version) {
         this.version = version;
     }
+
+    public CarFuel getFuel() {
+        return fuel;
+    }
+    public void setFuel(CarFuel fuel) {
+        this.fuel = fuel;
+    }
+
 }

@@ -1,21 +1,31 @@
 package pl.CarComp.database.models;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 
 @DatabaseTable(tableName = "models_table")
 public class CarModel implements BaseModel {
+    public static final String FOREIGN_BRAND_ID = "FOREIGN_BRAND_ID";
+
     public CarModel() {
     }
 
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = "BRAND_ID", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
+    @DatabaseField(columnName = FOREIGN_BRAND_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarBrand brand;
 
     @DatabaseField(columnName = "MODEL", canBeNull = false,unique = true)
     private String model;
+    @ForeignCollectionField()
+    private ForeignCollection<CarFuel> fuelForeignCollection;
+    @ForeignCollectionField()
+    private ForeignCollection<CarCapacity>capacityForeignCollection;
 
     public int getId() {
         return id;
@@ -38,5 +48,21 @@ public class CarModel implements BaseModel {
 
     public void setBrand(CarBrand brand) {
         this.brand = brand;
+    }
+
+    public ForeignCollection<CarFuel> getFuelForeignCollection() {
+        return fuelForeignCollection;
+    }
+
+    public void setFuelForeignCollection(ForeignCollection<CarFuel> fuelForeignCollection) {
+        this.fuelForeignCollection = fuelForeignCollection;
+    }
+
+    public ForeignCollection<CarCapacity> getCapacityForeignCollection() {
+        return capacityForeignCollection;
+    }
+
+    public void setCapacityForeignCollection(ForeignCollection<CarCapacity> capacityForeignCollection) {
+        this.capacityForeignCollection = capacityForeignCollection;
     }
 }

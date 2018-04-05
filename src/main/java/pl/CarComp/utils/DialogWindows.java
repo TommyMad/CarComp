@@ -32,6 +32,16 @@ public class DialogWindows {
 	Optional<ButtonType> result = alertOnClose.showAndWait();
 	return result;
     }
+	// add confirmation when delete item from database
+	public static Optional<ButtonType> confirmationOnremove() {
+		Alert alertOnClose = new Alert(AlertType.CONFIRMATION);
+		alertOnClose.initStyle(StageStyle.UTILITY);
+		alertOnClose.setTitle("");
+		alertOnClose.setHeaderText("Usunięcie rekordu");
+		alertOnClose.setContentText("Czy na pewno chcesz usunać pojazd z bazy");
+		Optional<ButtonType> result = alertOnClose.showAndWait();
+		return result;
+	}
 
     // setting error message window
     public static void errorDialog(String error) {
@@ -45,10 +55,10 @@ public class DialogWindows {
 	errorAlert.showAndWait();
     }
     //warning message window
-	public static void warningDialog(String warn) {
-		Alert infoAlert = new Alert(AlertType.WARNING);
+	public static void informationDialog(String warn) {
+		Alert infoAlert = new Alert(AlertType.INFORMATION);
 		infoAlert.setTitle("Błąd");
-		infoAlert.setHeaderText("Uwaga, możesz maksymalnie porówmać 6 pojazdów!");
+		infoAlert.setHeaderText("Uwaga, możesz maksymalnie porówmać X pojazdów!");
 
 		TextArea textAreaWarning = new TextArea(warn);
 		infoAlert.getDialogPane().setContent(textAreaWarning);

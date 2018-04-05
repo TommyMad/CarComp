@@ -10,23 +10,24 @@ import pl.CarComp.database.dao.CarBrandDao;
 import pl.CarComp.database.dbUtils.DBManager;
 import pl.CarComp.database.models.CarBrand;
 import pl.CarComp.modelFX.BrandsFX;
-import pl.CarComp.utils.converters.ConverterCommon;
+import pl.CarComp.utils.converters.ConverterBrand;
 import pl.CarComp.utils.exceptions.ApplicationException;
 
 //service for logic between javaFX and database
 //can be implements in package of application controllers
 
 public class BrandsFXcontroller {
-
     // list of brands
     private ObservableList<BrandsFX> brandsList = FXCollections.observableArrayList();
     // single item of brands list
     private ObjectProperty<BrandsFX> brandsListItem = new SimpleObjectProperty<>();
+    private ObjectProperty<BrandsFX> brandsFxObjectProperty = new SimpleObjectProperty<>(new BrandsFX());
 
     // method saving to database f.ex. after clicking button
     public void saveBrandInDatabase(String brand) throws ApplicationException {
         CarBrandDao carBrandDao = new CarBrandDao(DBManager.getConnectionSource());
         // car Brand from database models
+        //add models
         CarBrand carBrand = new CarBrand();
         carBrand.setBrand(brand);
         carBrandDao.createOrUpdate(carBrand);
@@ -41,7 +42,7 @@ public class BrandsFXcontroller {
         this.brandsList.clear();
         // loop
         listOfBrands.forEach((c) -> {
-            BrandsFX brandsFX = ConverterCommon.convertToBrandsFX(c);
+            BrandsFX brandsFX = ConverterBrand.convertToBrandsFX(c);
             this.brandsList.add(brandsFX);
         });
         DBManager.closeConnectionSource();
@@ -75,5 +76,25 @@ public class BrandsFXcontroller {
 
     public BrandsFX getBrandsFX() {
         return brandsListItem.get();
+    }
+
+    public ObjectProperty<BrandsFX> brandsListItemProperty() {
+        return brandsListItem;
+    }
+
+    public void setBrandsListItem(BrandsFX brandsListItem) {
+        this.brandsListItem.set(brandsListItem);
+    }
+
+    public BrandsFX getBrandsFxObjectProperty() {
+        return brandsFxObjectProperty.get();
+    }
+
+    public ObjectProperty<BrandsFX> brandsFxObjectPropertyProperty() {
+        return brandsFxObjectProperty;
+    }
+
+    public void setBrandsFxObjectProperty(BrandsFX brandsFxObjectProperty) {
+        this.brandsFxObjectProperty.set(brandsFxObjectProperty);
     }
 }

@@ -4,10 +4,12 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import pl.CarComp.database.dao.CarVersionDao;
+import org.sqlite.core.DB;
+import pl.CarComp.database.dao.*;
 import pl.CarComp.database.dbUtils.DBManager;
-import pl.CarComp.database.models.CarVersion;
+import pl.CarComp.database.models.*;
 import pl.CarComp.modelFX.VersionsFX;
+import pl.CarComp.utils.converters.ConverterVersion;
 import pl.CarComp.utils.exceptions.ApplicationException;
 
 import java.util.List;
@@ -18,18 +20,30 @@ public class VersionsFXcontroller {
     private ObservableList<VersionsFX> versionsList = FXCollections.observableArrayList();
     // single item of versions list
     private ObjectProperty<VersionsFX> versionsListItem = new SimpleObjectProperty<>();
+    private ObjectProperty<VersionsFX> versionsObjectProperty = new SimpleObjectProperty<>(new VersionsFX());
 
     // method saving to database f.ex. after clicking button
-    public void saveVersionInDatabase(String version) throws ApplicationException {
+    public void saveVersionInDatabase() throws ApplicationException {
+        CarVersion carVersion = ConverterVersion.convertToVersion(this.getVersionsObjectProperty());
         CarVersionDao carVersionDao = new CarVersionDao(DBManager.getConnectionSource());
-        // car Version from database models
-        CarVersion carVersion = new CarVersion();
-        carVersion.setVersion(version);
+
+        //initialize foreign dao to find match
+        CarBrandDao carBrandDao = new CarBrandDao(DBManager.getConnectionSource());
+        CarBrand tempCarBrand = carBrandDao.findById(CarBrand.class, this.getVersionsObjectProperty().getBrandsFXObjectProperty().getId());
+        CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
+        CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getVersionsObjectProperty().getModelsFXObjectProperty().getId());
+        CarFuelDao carFuelDao=new CarFuelDao(DBManager.getConnectionSource());
+        CarFuel tempCarFuel=carFuelDao.findById(CarFuel.class, this.getVersionsObjectProperty().getFuelsFXObjectProperty().getId());
+        CarCapacityDao carCapacityDao=new CarCapacityDao(DBManager.getConnectionSource());
+        CarCapacity tempCarCapacity=carCapacityDao.findById(CarCapacity.class,this.getVersionsObjectProperty().getCapacitiesFXObjectProperty().getId());
+        carVersion.setBrand(tempCarBrand);
+        carVersion.setModel(tempCarModel);
+        carVersion.setFuel(tempCarFuel);
+        carVersion.setCapacity(tempCarCapacity);
+        carVersion.setVersion(this.getVersionsObjectProperty().getVersion());
         carVersionDao.createOrUpdate(carVersion);
         DBManager.closeConnectionSource();
         initializeVersionsList();
-        //debug
-        System.out.println("Po zapisie w bazie, versionsfx controller "+carVersion.toString());
     }
 
     // initialize list of versions
@@ -50,6 +64,14 @@ public class VersionsFXcontroller {
 
     public ObservableList<VersionsFX> getVersionsList() {
         return versionsList;
+    }
+
+    public VersionsFX getVersionsObjectProperty() {
+        return versionsObjectProperty.get();
+    }
+
+    public ObjectProperty<VersionsFX> versionsObjectPropertyProperty() {
+        return versionsObjectProperty;
     }
 
     public void setVersionsList(ObservableList<VersionsFX> versionsList) {

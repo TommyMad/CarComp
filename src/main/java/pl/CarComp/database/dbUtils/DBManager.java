@@ -4,11 +4,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import pl.CarComp.database.models.CarBrand;
-import pl.CarComp.database.models.CarCapacity;
-import pl.CarComp.database.models.CarFuel;
-import pl.CarComp.database.models.CarModel;
-import pl.CarComp.database.models.CarVersion;
+import pl.CarComp.database.models.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -64,6 +60,7 @@ public class DBManager {
             TableUtils.dropTable(connectionSource, CarCapacity.class, true);
             TableUtils.dropTable(connectionSource, CarFuel.class, true);
             TableUtils.dropTable(connectionSource, CarVersion.class, true);
+            TableUtils.dropTable(connectionSource, CarsCharacteristic.class, true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,6 +75,7 @@ public class DBManager {
             TableUtils.createTableIfNotExists(connectionSource, CarCapacity.class);
             TableUtils.createTableIfNotExists(connectionSource, CarFuel.class);
             TableUtils.createTableIfNotExists(connectionSource, CarVersion.class);
+            TableUtils.createTableIfNotExists(connectionSource, CarsCharacteristic.class);
 
         } catch (SQLException e) {
             e.printStackTrace();
