@@ -10,4 +10,11 @@ public class ConverterFuel {
         carFuel.setFuel(fuelsFX.getFuel());
         return carFuel;
     }
+    public static FuelsFX convertToFuelFX(CarFuel carFuel){
+        FuelsFX fuelsFX=new FuelsFX();
+        fuelsFX.setId(carFuel.getId());
+        fuelsFX.setFuel(carFuel.getFuel());
+        fuelsFX.setModelsFXObjectProperty(ConverterModels.convertToModelFX(carFuel.getModel()));
+        return fuelsFX;
+    }
 }

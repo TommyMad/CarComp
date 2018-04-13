@@ -14,7 +14,9 @@ import pl.CarComp.utils.converters.ConverterModels;
 import pl.CarComp.utils.exceptions.ApplicationException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -33,7 +35,7 @@ public class CarsCharacteristicsFXcontroller {
     private ObservableList<VersionsFX> versionsFXObservableList = FXCollections.observableArrayList();
     private ObservableList<CarsCharacteristicsFX> carsCharacteristicsFXObservableList = FXCollections.observableArrayList();
 
-    private List<CarsCharacteristicsFX> temporaryCarsCharacteristicsList = new ArrayList<>();
+    //private List<CarsCharacteristicsFX> temporaryCarsCharacteristicsList = new ArrayList<>();
 
     public void initCarsCharacteristicFXcontroller() throws ApplicationException {
         initBrandsList();
@@ -41,33 +43,7 @@ public class CarsCharacteristicsFXcontroller {
         initFuelsList();
         initCapacitiesList();
         initVersionsList();
-
-        //test fultrow
-        CarsCharacteristicsDao carsCharacteristicsDao = new CarsCharacteristicsDao(DBManager.getConnectionSource());
-        List<CarsCharacteristic> characteristicsList = carsCharacteristicsDao.queryForAll(CarsCharacteristic.class);
-        temporaryCarsCharacteristicsList.clear();
-        characteristicsList.forEach(characteristics -> {
-            this.temporaryCarsCharacteristicsList.add(ConverterCarCharacteristics.convertToCarsCharacteristicFX(characteristics));
-        });
-        this.carsCharacteristicsFXObservableList.setAll(temporaryCarsCharacteristicsList);
     }
-
-    private Predicate<CarsCharacteristicsFX> predicateVersion() {
-        return carsCharacteristicsFX -> carsCharacteristicsFX.getVersionsFXObjectProperty().getId() == getCarsCharacteristicsFXObjectProperty().getId();
-    }
-
-    private void filterPredicate(Predicate<CarsCharacteristicsFX> predicate) {
-        List<CarsCharacteristicsFX> newList = temporaryCarsCharacteristicsList.stream().filter(predicate).collect(Collectors.toList());
-        this.carsCharacteristicsFXObservableList.setAll(newList);
-    }
-    public void filterCharacteristics(){
-        if(getVersionsFXObjectProperty()!=null){
-            filterPredicate(predicateVersion());
-        }else{
-            this.carsCharacteristicsFXObservableList.setAll(this.temporaryCarsCharacteristicsList);
-        }
-    }
-
 
     private void initBrandsList() throws ApplicationException {
         CarBrandDao carBrandDao = new CarBrandDao(DBManager.getConnectionSource());
@@ -154,21 +130,47 @@ public class CarsCharacteristicsFXcontroller {
         carsCharacteristic.setFuel(tempCarFuel);
         carsCharacteristic.setCapacity(tempCarCapacity);
         carsCharacteristic.setVersion(tempCarVersion);
+
         carsCharacteristicsDao.createOrUpdate(carsCharacteristic);
+        carsCharacteristicsDao.refresh(carsCharacteristic);
+
         DBManager.closeConnectionSource();
-        initializeCarsCharacteristicsList();
+        //initializeCarsCharacteristicsList();
     }
 
     public void deleteCar() throws ApplicationException {
         CarsCharacteristicsDao carsCharacteristicsDao = new CarsCharacteristicsDao(DBManager.getConnectionSource());
         carsCharacteristicsDao.deleteById(CarsCharacteristic.class, this.getCarsCharacteristicsFXObjectProperty().getId());
+        System.out.println("id "+this.getCarsCharacteristicsFXObjectProperty().getId());
 
         //CarVersionDao carVersionDao=new CarVersionDao(DBManager.getConnectionSource());
-        // carVersionDao=carVersionDao.deleteById(CarVersion.class,);
+        //carVersionDao=carVersionDao.deleteById(CarVersion.class,);
+        DBManager.closeConnectionSource();
     }
 
     public void initializeCarsCharacteristicsList() {
         CarsCharacteristicsDao carsCharakcteristicsDao = new CarsCharacteristicsDao(DBManager.getConnectionSource());
+    }
+
+    public void initFilteredListCarsCharacteristic() throws ApplicationException {
+        CarBrandDao carBrandDao = new CarBrandDao(DBManager.getConnectionSource());
+        CarBrand tempCarBrand = carBrandDao.findById(CarBrand.class, this.getCarsCharacteristicsFXObjectProperty().getBrandsFXObjectProperty().getId());
+        CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
+        CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getCarsCharacteristicsFXObjectProperty().getModelsFXObjectProperty().getId());
+        CarVersionDao carVersionDao = new CarVersionDao(DBManager.getConnectionSource());
+        CarVersion tempCarVersion = carVersionDao.findById(CarVersion.class, this.getCarsCharacteristicsFXObjectProperty().getVersionsFXObjectProperty().getId());
+
+        CarsCharacteristicsDao carsCharacteristicsDao = new CarsCharacteristicsDao(DBManager.getConnectionSource());
+        List<CarsCharacteristic> carsCharacteristicFilteredList = carsCharacteristicsDao.queryRaw(CarsCharacteristic.class, tempCarBrand, tempCarModel, tempCarVersion);
+        carsCharacteristicsFXObservableList.clear();
+        carsCharacteristicFilteredList.forEach((c)->{
+            CarsCharacteristicsFX carsCharacteristicsFX=ConverterCarCharacteristics.convertToCarsCharacteristicFX(c);
+
+            this.carsCharacteristicsFXObservableList.add(carsCharacteristicsFX);
+            System.out.println("wielkosc fxobservable "+carsCharacteristicsFXObservableList.size()+" "+carsCharacteristicsFXObservableList);
+        });
+        DBManager.closeConnectionSource();
+
 
     }
 
@@ -282,5 +284,13 @@ public class CarsCharacteristicsFXcontroller {
 
     public void setVersionsFXObjectProperty(VersionsFX versionsFXObjectProperty) {
         this.versionsFXObjectProperty.set(versionsFXObjectProperty);
+    }
+
+    public ObservableList<CarsCharacteristicsFX> getCarsCharacteristicsFXObservableList() {
+        return carsCharacteristicsFXObservableList;
+    }
+
+    public void setCarsCharacteristicsFXObservableList(ObservableList<CarsCharacteristicsFX> carsCharacteristicsFXObservableList) {
+        this.carsCharacteristicsFXObservableList = carsCharacteristicsFXObservableList;
     }
 }

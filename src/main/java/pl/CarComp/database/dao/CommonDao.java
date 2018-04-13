@@ -1,17 +1,13 @@
 package pl.CarComp.database.dao;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.support.ConnectionSource;
-
-import javafx.beans.property.IntegerProperty;
 import pl.CarComp.database.models.BaseModel;
-import pl.CarComp.database.models.CarBrand;
 import pl.CarComp.utils.exceptions.ApplicationException;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public abstract class CommonDao {
     protected final ConnectionSource connectionSource;
@@ -32,6 +28,15 @@ public abstract class CommonDao {
             throw new ApplicationException("Problem z aktualizacją/tworzeniem wpisu w bazie. Dane nie mogą się powtarzać.");
         }
 
+    }
+    public <T extends BaseModel, I> void update(BaseModel baseModel) throws ApplicationException {
+        Dao<T, I> dao = getDao((Class<T>) baseModel.getClass());
+        try {
+            dao.update((T) baseModel);
+        } catch (SQLException e) {
+            System.out.println(e.getCause().getMessage());
+            throw new ApplicationException("Problem z aktualizacją/tworzeniem wpisu w bazie. Dane nie mogą się powtarzać.");
+        }
     }
 
     // refreshing database
@@ -101,37 +106,29 @@ public abstract class CommonDao {
         //return null;
     }
 
-    //query
-    public <T extends BaseModel, I> T queryForId(Class<T> cls, Integer id) throws ApplicationException {
+    public <T extends BaseModel, I> List<T> queryRaw(Class<T> cls, Object value, Object value2, Object value3) throws ApplicationException {
         try {
-            Dao<T, I> dao = getDao(cls);
-            return dao.queryForId((I) id);
-        } catch (SQLException e) {
-            System.out.println(e.getCause().getMessage());
-            throw new ApplicationException("Problem z wyszukaniem danych w bazie po numerze");
-        }
-        //return null;
-    }
+            Dao<T,I> dao = getDao(cls);
 
-    //testing
-    public <T extends BaseModel, I> List<T> queryForMatching(Class<T> cls, Object obj) throws ApplicationException {
-        try {
-            Dao<T, I> dao = getDao(cls);
-
-            return dao.queryForMatching((T) obj);
+            return dao.queryBuilder().where()
+                    .eq("FOREIGN_BRAND_ID",value).and()
+                    .eq("FOREIGN_MODEL_ID",value2).and()
+                    .eq("FOREIGN_VERSION_ID",value3).query();
         } catch (SQLException e) {
             System.out.println(e.getCause().getMessage());
             throw new ApplicationException("Problem");
         }
     }
-    /*public <T extends BaseModel, I> List<T> queryForEq(Class<T> cls,String string) throws ApplicationException {
+
+    public <T extends BaseModel, I> List<T> queryForEq(Class<T> cls, String fieldname, Object value) throws ApplicationException {
         try {
             Dao<T, I> dao = getDao(cls);
 
-            return dao.queryForEq();
+            return dao.queryForEq(fieldname, value);
         } catch (SQLException e) {
             System.out.println(e.getCause().getMessage());
             throw new ApplicationException("Problem");
         }
-    }*/
+    }
+
 }

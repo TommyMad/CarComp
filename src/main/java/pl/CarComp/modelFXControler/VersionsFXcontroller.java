@@ -61,6 +61,21 @@ public class VersionsFXcontroller {
         });
         DBManager.closeConnectionSource();
     }
+    public void initializeFilteredVersionsList() throws ApplicationException {
+        CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
+        CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getVersionsObjectProperty().getModelsFXObjectProperty().getId());
+
+        CarVersionDao carVersionDao = new CarVersionDao(DBManager.getConnectionSource());
+        List<CarVersion> listOfFilteredVersions = carVersionDao.queryForEq(CarVersion.class,"FOREIGN_MODEL_ID",tempCarModel);
+        versionsList.clear();
+        // loop
+        listOfFilteredVersions.forEach((c) -> {
+            // create new object VersionsFX model
+            VersionsFX versionsFX = ConverterVersion.convertToversionsFX(c);
+            this.versionsList.add(versionsFX);
+        });
+        DBManager.closeConnectionSource();
+    }
 
     public ObservableList<VersionsFX> getVersionsList() {
         return versionsList;

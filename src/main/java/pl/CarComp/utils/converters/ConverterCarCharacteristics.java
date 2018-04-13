@@ -33,6 +33,7 @@ public class ConverterCarCharacteristics {
         carsCharacteristic.setTrunk(carsCharacteristicsFX.getTrunk());
         carsCharacteristic.setDoors(carsCharacteristicsFX.getDoors());
         carsCharacteristic.setWeight(carsCharacteristicsFX.getWeight());
+        carsCharacteristic.setGearboxSize(carsCharacteristicsFX.getGearboxSize());
         return carsCharacteristic;
     }
 
@@ -61,6 +62,13 @@ public class ConverterCarCharacteristics {
         carsCharacteristicsFX.setTrunk(carsCharacteristic.getTrunk());
         carsCharacteristicsFX.setDoors(carsCharacteristic.getDoors());
         carsCharacteristicsFX.setWeight(carsCharacteristic.getWeight());
+        carsCharacteristicsFX.setGearboxSize(carsCharacteristic.getGearboxSize());
+
+        carsCharacteristicsFX.setBrandsFXObjectProperty(ConverterBrand.convertToBrandsFX(carsCharacteristic.getBrand()));
+        carsCharacteristicsFX.setModelsFXObjectProperty(ConverterModels.convertToModelFX(carsCharacteristic.getModel()));
+        carsCharacteristicsFX.setFuelsFXObjectProperty(ConverterFuel.convertToFuelFX(carsCharacteristic.getFuel()));
+        carsCharacteristicsFX.setCapacitiesFXObjectProperty(ConverterCapacity.convertToCapacitiesFX(carsCharacteristic.getCapacity()));
+        carsCharacteristicsFX.setVersionsFXObjectProperty(ConverterVersion.convertToversionsFX(carsCharacteristic.getVersion()));
         return carsCharacteristicsFX;
     }
 

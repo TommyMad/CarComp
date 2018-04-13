@@ -7,6 +7,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class DialogWindows {
@@ -34,12 +35,14 @@ public class DialogWindows {
     }
 	// add confirmation when delete item from database
 	public static Optional<ButtonType> confirmationOnremove() {
-		Alert alertOnClose = new Alert(AlertType.CONFIRMATION);
-		alertOnClose.initStyle(StageStyle.UTILITY);
-		alertOnClose.setTitle("");
-		alertOnClose.setHeaderText("Usunięcie rekordu");
-		alertOnClose.setContentText("Czy na pewno chcesz usunać pojazd z bazy");
-		Optional<ButtonType> result = alertOnClose.showAndWait();
+		Alert alertOnDelete = new Alert(AlertType.CONFIRMATION);
+		Stage stage=(Stage) alertOnDelete.getDialogPane().getScene().getWindow();
+		stage.setAlwaysOnTop(true);
+		alertOnDelete.initStyle(StageStyle.UTILITY);
+		alertOnDelete.setTitle("");
+		alertOnDelete.setHeaderText("Usunięcie rekordu");
+		alertOnDelete.setContentText("Czy na pewno chcesz usunać pojazd z bazy");
+		Optional<ButtonType> result = alertOnDelete.showAndWait();
 		return result;
 	}
 

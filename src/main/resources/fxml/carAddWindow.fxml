@@ -5,13 +5,11 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -91,7 +89,7 @@
                      <padding>
                         <Insets top="15.0" />
                      </padding>
-                     <Label text="Skrzynia biegów" />
+                     <Label text="Typ skrzyni biegów" />
                      <Label text="Liczba biegów" />
                      <Label text="Pojemność silnika" />
                      <Label text="Typ silnika" />
@@ -111,17 +109,7 @@
                      </VBox.margin>
                   </Separator>
                   <VBox spacing="5.0">
-                     <HBox spacing="8.0">
-                        <VBox.margin>
-                           <Insets top="5.0" />
-                        </VBox.margin>
-                        <RadioButton fx:id="manualTransmissionRB" mnemonicParsing="false" text="manualna">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="on" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="automaticTransmissionRB" mnemonicParsing="false" text="automatyczna" toggleGroup="$on" />
-                     </HBox>
+                     <TextField fx:id="gearboxTypeTF" />
                      <TextField fx:id="gearboxSizeTF" />
                      <TextField fx:id="engineCapacityTF" />
                      <TextField fx:id="engineTypeTF" />

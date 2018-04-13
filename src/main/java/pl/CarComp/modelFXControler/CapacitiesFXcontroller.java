@@ -63,7 +63,21 @@ public class CapacitiesFXcontroller {
         });
         DBManager.closeConnectionSource();
     }
+    public void initializeFilteredCapacitiesList() throws ApplicationException {
+        CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
+        CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getCapacitiesFXObjectProperty().getModelsFXObjectProperty().getId());
 
+        CarCapacityDao carCapacityDao = new CarCapacityDao(DBManager.getConnectionSource());
+        List<CarCapacity> listOfFilteredCapacities = carCapacityDao.queryForEq(CarCapacity.class,"FOREIGN_MODEL_ID",tempCarModel);
+        capacityList.clear();
+
+        listOfFilteredCapacities.forEach((c) -> {
+            // create new object CapacitiesFX model
+            CapacitiesFX capacitiesFX = ConverterCapacity.convertToCapacitiesFX(c);
+            this.capacityList.add(capacitiesFX);
+        });
+        DBManager.closeConnectionSource();
+    }
     public ObservableList<CapacitiesFX> getCapacityList() {
         return capacityList;
     }

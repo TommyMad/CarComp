@@ -10,4 +10,11 @@ public class ConverterCapacity {
         carCapacity.setCapacity(capacitiesFX.getCapacity());
         return carCapacity;
     }
+    public static CapacitiesFX convertToCapacitiesFX(CarCapacity carCapacity){
+        CapacitiesFX capacitiesFX=new CapacitiesFX();
+        capacitiesFX.setId(carCapacity.getId());
+        capacitiesFX.setCapacity(carCapacity.getCapacity());
+        capacitiesFX.setModelsFXObjectProperty(ConverterModels.convertToModelFX(carCapacity.getModel()));
+        return capacitiesFX;
+    }
 }

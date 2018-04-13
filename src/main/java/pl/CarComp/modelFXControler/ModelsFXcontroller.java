@@ -59,14 +59,14 @@ public class ModelsFXcontroller {
         DBManager.closeConnectionSource();
     }
     public void initializeFilteredModelsList() throws ApplicationException {
+        //find in car_model table brand ID
         CarBrandDao carBrandDao=new CarBrandDao(DBManager.getConnectionSource());
         CarBrand tempCarBrand = carBrandDao.findById(CarBrand.class, this.getModelsFxObjectProperty().getBrandsFXObjectProperty().getId());
-        System.out.println("id brand "+this.getModelsFxObjectProperty().getBrandsFXObjectProperty().getId());
 
         CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
-        List<CarModel> listOfFilteredModels = carModelDao.queryForMatching(CarModel.class,tempCarBrand);
+        List<CarModel> listOfFilteredModels = carModelDao.queryForEq(CarModel.class,"FOREIGN_BRAND_ID",tempCarBrand);
         modelsList.clear();
-        // loop
+        // loopC
         listOfFilteredModels.forEach((c) -> {
             // create new object ModelsFX model
             ModelsFX modelsFX = ConverterModels.convertToModelFX(c);

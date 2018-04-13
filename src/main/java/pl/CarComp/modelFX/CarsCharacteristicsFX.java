@@ -1,9 +1,6 @@
 package pl.CarComp.modelFX;
 
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
 import java.time.LocalDate;
 
@@ -17,7 +14,7 @@ public class CarsCharacteristicsFX {
     private IntegerProperty id = new SimpleIntegerProperty();
 
     private StringProperty price = new SimpleStringProperty();
-    private ObjectProperty<LocalDate> priceDate = new SimpleObjectProperty<>();
+    private ObjectProperty<LocalDate> priceDate = new SimpleObjectProperty();
     private StringProperty transmission = new SimpleStringProperty();
     private StringProperty engCapacity = new SimpleStringProperty();
     private StringProperty engType = new SimpleStringProperty();
@@ -38,6 +35,9 @@ public class CarsCharacteristicsFX {
     private StringProperty weight = new SimpleStringProperty();
     private StringProperty topSpeed = new SimpleStringProperty();
     private StringProperty gearboxSize = new SimpleStringProperty();
+
+
+
 
     public BrandsFX getBrandsFXObjectProperty() {
         return brandsFXObjectProperty.get();
@@ -382,4 +382,5 @@ public class CarsCharacteristicsFX {
     public void setTopSpeed(String topSpeed) {
         this.topSpeed.set(topSpeed);
     }
+
 }

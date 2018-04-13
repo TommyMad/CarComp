@@ -10,4 +10,11 @@ public class ConverterVersion {
         carVersion.setVersion(versionsFX.getVersion());
         return carVersion;
     }
+    public static VersionsFX convertToversionsFX(CarVersion carVersion){
+        VersionsFX versionsFX=new VersionsFX();
+        versionsFX.setId(carVersion.getId());
+        versionsFX.setVersion(carVersion.getVersion());
+        versionsFX.setModelsFXObjectProperty(ConverterModels.convertToModelFX(carVersion.getModel()));
+        return versionsFX;
+    }
 }

@@ -1,16 +1,18 @@
 package pl.CarComp.database.models;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+import java.time.LocalDate;
 import java.util.Date;
-
+@DatabaseTable(tableName = "car_Characteristics_table")
 public class CarsCharacteristic implements BaseModel{
     public static final String FOREIGN_BRAND_ID = "FOREIGN_BRAND_ID";
     public static final String FOREIGN_MODEL_ID = "FOREIGN_MODEL_ID";
     public static final String FOREIGN_CAPACITY_ID = "FOREIGN_CAPACITY_ID";
     public static final String FOREIGN_FUEL_ID = "FOREIGN_FUEL_ID";
     public static final String FOREIGN_VERSION_ID = "FOREIGN_VERSION_ID";
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true,unique = true)
     private int id;
     @DatabaseField(columnName = FOREIGN_BRAND_ID,foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true, canBeNull = false)
     private CarBrand brand;

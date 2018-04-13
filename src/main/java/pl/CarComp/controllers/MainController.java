@@ -136,7 +136,7 @@ public class MainController {
             stage.initStyle(StageStyle.UTILITY);
             stage.setResizable(false);
             stage.setScene(new Scene(carAddPane));
-            stage.toFront();
+            stage.setAlwaysOnTop(true);
             stage.show();
         } catch (Exception e) {
             DialogWindows.errorDialog(e.getMessage());

@@ -22,9 +22,8 @@ public class CarAddEditController {
     @FXML
     private ScrollPane carAddPane;
     @FXML
-    private TextField brandNameTextF, modelNameTextF, fuelNameTextF, capacityNameTextF, versionNameTextF, priceTF, gearboxSizeTF, engineCapacityTF, engineTypeTF, cylindersTF, powerMaxTF, torqueMaxTF, cityFuelTF, roadFuelTF, fuelNormalTF, tankCapacityTF, accelerationTF, speedTF, lenghtTF, widthTF, heightTF, wheelbaseTF, trunkTF, doorsTF, weightTF;
-    @FXML
-    private RadioButton manualTransmissionRB, automaticTransmissionRB;
+    private TextField brandNameTextF, modelNameTextF, fuelNameTextF, capacityNameTextF, versionNameTextF, priceTF, gearboxSizeTF, engineCapacityTF, engineTypeTF, cylindersTF, powerMaxTF, torqueMaxTF, cityFuelTF, roadFuelTF, fuelNormalTF, tankCapacityTF, accelerationTF, speedTF, lenghtTF, widthTF, heightTF, wheelbaseTF, trunkTF, doorsTF, weightTF, gearboxTypeTF;
+
     @FXML
     private DatePicker datePickerField;
     @FXML
@@ -74,7 +73,6 @@ public class CarAddEditController {
         this.fuelChoiceComboBox2.setItems(this.fuelsFXcontroller.getFuelsList());
         this.capacityChoiceComboBox2.setItems(this.capacitiesFXcontroller.getCapacityList());
         this.versionChoiceComboBox2.setItems(this.versionsFXcontroller.getVersionsList());
-
     }
 
     @FXML
@@ -83,6 +81,8 @@ public class CarAddEditController {
         if (result.get() == ButtonType.OK) {
             try {
                 carsCharacteristicsFXcontroller.deleteCar();
+                clearAllComboboxes();
+                clearTextfields();
             } catch (ApplicationException e) {
                 DialogWindows.errorDialog(e.getMessage());
             }
@@ -103,7 +103,7 @@ public class CarAddEditController {
             DialogWindows.errorDialog(e.getMessage());
         }
         clearTextfields();
-        clearCombobox();
+        clearAllComboboxes();
     }
 
     @FXML
@@ -122,6 +122,7 @@ public class CarAddEditController {
             fuelChoiceComboBox2.getSelectionModel().clearSelection();
             capacityChoiceComboBox2.getSelectionModel().clearSelection();
             versionChoiceComboBox2.getSelectionModel().clearSelection();
+            clearTextfields();
         }
     }
 
@@ -131,10 +132,18 @@ public class CarAddEditController {
             if (fuelChoiceComboBox2.getSelectionModel().isEmpty() &&
                     capacityChoiceComboBox2.getSelectionModel().isEmpty() &&
                     versionChoiceComboBox2.getSelectionModel().isEmpty()) {
+                //filter capacity
+                try {
+                    this.capacitiesFXcontroller.initializeFilteredCapacitiesList();
+                    this.versionsFXcontroller.initializeFilteredVersionsList();
+                } catch (ApplicationException e) {
+                    DialogWindows.errorDialog(e.getMessage());
+                }
             } else {
                 fuelChoiceComboBox2.getSelectionModel().clearSelection();
                 capacityChoiceComboBox2.getSelectionModel().clearSelection();
                 versionChoiceComboBox2.getSelectionModel().clearSelection();
+                clearTextfields();
             }
         }
     }
@@ -142,13 +151,13 @@ public class CarAddEditController {
     @FXML
     private void selectFuelComboBox() {
         if (fuelChoiceComboBox2.getValue() != null) {
-
             if (capacityChoiceComboBox2.getSelectionModel().isEmpty() &&
                     versionChoiceComboBox2.getSelectionModel().isEmpty()) {
-
+                // errors when previous is not selected
             } else {
                 capacityChoiceComboBox2.getSelectionModel().clearSelection();
                 versionChoiceComboBox2.getSelectionModel().clearSelection();
+                clearTextfields();
             }
         }
     }
@@ -157,9 +166,14 @@ public class CarAddEditController {
     private void selectCapacityComboBox() {
         if (capacityChoiceComboBox2.getValue() != null) {
             if (versionChoiceComboBox2.getSelectionModel().isEmpty()) {
-
+                try {
+                    this.versionsFXcontroller.initializeFilteredVersionsList();
+                } catch (ApplicationException e) {
+                    DialogWindows.errorDialog(e.getMessage());
+                }
             } else {
                 versionChoiceComboBox2.getSelectionModel().clearSelection();
+                clearTextfields();
             }
         }
     }
@@ -167,14 +181,50 @@ public class CarAddEditController {
     @FXML
     private void selectVersionComboBox() {
         versionChoiceComboBox2.getValue();
-        //this.carsCharacteristicsFXcontroller.filterCharacteristics();
+        if (modelChoiceComboBox2.getSelectionModel().isEmpty() |
+                fuelChoiceComboBox2.getSelectionModel().isEmpty() |
+                capacityChoiceComboBox2.getSelectionModel().isEmpty()) {
+        } else {
+            try {
+                this.carsCharacteristicsFXcontroller.initFilteredListCarsCharacteristic();
+                    setTextFieldsCharactersitics();
+            } catch (ApplicationException e) {
+                DialogWindows.errorDialog(e.getMessage());
+            }
 
+        }
+    }
+
+    private void setTextFieldsCharactersitics() {
+        priceTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getPrice());
+        datePickerField.getEditor().setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getPriceDate().toString());
+        gearboxTypeTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getTransmission());
+        gearboxSizeTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getGearboxSize());
+        engineCapacityTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getEngCapacity());
+        engineTypeTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getEngType());
+        cylindersTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getCylinders());
+        powerMaxTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getEngPower());
+        torqueMaxTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getTorque());
+        cityFuelTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getFuelConsCity());
+        roadFuelTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getFuelConsRoute());
+        fuelNormalTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getFuelConsMixed());
+        tankCapacityTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getTankCapacity());
+        accelerationTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getAcceleration());
+        speedTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getTopSpeed());
+        lenghtTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getLenght());
+        widthTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getWidth());
+        heightTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getHeight());
+        wheelbaseTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getWheeelbase());
+        trunkTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getTrunk());
+        doorsTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getDoors());
+        weightTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(0).getWeight());
     }
 
     @FXML
     public void addNewBrand() {
         try {
             brandsFXcontroller.saveBrandInDatabase(brandNameTextF.getText());
+            this.brandsFXcontroller.initializeBrandsList();
         } catch (ApplicationException e) {
             DialogWindows.errorDialog(e.getMessage());
         }
@@ -185,6 +235,7 @@ public class CarAddEditController {
     public void addNewModel() {
         try {
             modelsFXcontroller.saveModelInDatabase();
+            this.modelsFXcontroller.initializeFilteredModelsList();
         } catch (ApplicationException e) {
             DialogWindows.errorDialog(e.getMessage());
         }
@@ -205,6 +256,7 @@ public class CarAddEditController {
     public void addNewCapacity() {
         try {
             capacitiesFXcontroller.saveCapacityInDatabase();
+            this.capacitiesFXcontroller.initializeFilteredCapacitiesList();
         } catch (ApplicationException e) {
             DialogWindows.errorDialog(e.getMessage());
         }
@@ -214,6 +266,7 @@ public class CarAddEditController {
     public void addNewVersion() {
         try {
             versionsFXcontroller.saveVersionInDatabase();
+            this.versionsFXcontroller.initializeFilteredVersionsList();
         } catch (ApplicationException e) {
             DialogWindows.errorDialog(e.getMessage());
         }
@@ -315,8 +368,7 @@ public class CarAddEditController {
     private void initBindingsForCarCharacteristics() {
         priceTF.textProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().priceProperty());
         datePickerField.valueProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().priceDateProperty());
-        automaticTransmissionRB.textProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().transmissionProperty());
-        manualTransmissionRB.textProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().transmissionProperty());
+        gearboxTypeTF.textProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().transmissionProperty());
         engineCapacityTF.textProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().engCapacityProperty());
         engineTypeTF.textProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().engTypeProperty());
         cylindersTF.textProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().cylindersProperty());
@@ -347,8 +399,7 @@ public class CarAddEditController {
         versionNameTextF.clear();
         priceTF.clear();
         datePickerField.getEditor().clear();
-        manualTransmissionRB.setSelected(false);
-        automaticTransmissionRB.setSelected(false);
+        gearboxTypeTF.clear();
         engineCapacityTF.clear();
         engineTypeTF.clear();
         cylindersTF.clear();
@@ -370,7 +421,7 @@ public class CarAddEditController {
         gearboxSizeTF.clear();
     }
 
-    private void clearCombobox() {
+    private void clearAllComboboxes() {
         brandChoiceComboBox2.getSelectionModel().clearSelection();
         modelChoiceComboBox2.getSelectionModel().clearSelection();
         fuelChoiceComboBox2.getSelectionModel().clearSelection();
