@@ -63,7 +63,9 @@ public class VersionsFXcontroller {
     }
     public void initializeFilteredVersionsList() throws ApplicationException {
         CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
+        //CarCapacityDao carCapacityDao=new CarCapacityDao(DBManager.getConnectionSource());
         CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getVersionsObjectProperty().getModelsFXObjectProperty().getId());
+        //CarCapacity tempCarCapacity=carCapacityDao.findById(CarCapacity.class,this.getVersionsObjectProperty().getCapacitiesFXObjectProperty().getId());
 
         CarVersionDao carVersionDao = new CarVersionDao(DBManager.getConnectionSource());
         List<CarVersion> listOfFilteredVersions = carVersionDao.queryForEq(CarVersion.class,"FOREIGN_MODEL_ID",tempCarModel);

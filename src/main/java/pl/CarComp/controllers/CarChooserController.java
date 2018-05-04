@@ -1,6 +1,8 @@
 package pl.CarComp.controllers;
 
 import javafx.beans.binding.BooleanBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,16 +18,18 @@ import pl.CarComp.modelFXControler.*;
 import pl.CarComp.utils.DialogWindows;
 import pl.CarComp.utils.exceptions.ApplicationException;
 
-// dezaktywacja comboboxow
-// set to default in combobox
+
 public class CarChooserController {
 
-    public static final String FXML_CAR_COMPARE_WINDOW_FXML = "/fxml/carCompareWindow.fxml";
-
+    //public static final String FXML_CAR_COMPARE_WINDOW_FXML = "/fxml/carCompareWindow.fxml";
 
     //list from fx controllers
     private BrandsFXcontroller brandsFXcontroller;
-
+    private ModelsFXcontroller modelsFXcontroller;
+    private FuelsFXcontroller fuelsFXcontroller;
+    private CapacitiesFXcontroller capacitiesFXcontroller;
+    private VersionsFXcontroller versionsFXcontroller;
+    private CarsCharacteristicsFXcontroller carsCharacteristicsFXcontroller;
     @FXML
     private TabPane mainTabPane;
     @FXML
@@ -45,12 +49,19 @@ public class CarChooserController {
     @FXML
     private Button nextTabButton1, nextTabButton2, nextTabButton3;
 
+
     // controllers
     private static MainController foreignMainController;
     private static CarCompareController foreignCarCompareController;
     private static NextCarCompareController foreignNextCarCompareController;
     private static NextCarCompare2Controller foreignNextCarCompare2Controller;
     private static NextCarCompare3Controller foreignNextCarCompare3Controller;
+    // list of car characteristics for inserting into Listviev
+    private ObservableList<String> carsDataListPrices = FXCollections.observableArrayList();
+    private ObservableList<String> carsDataListEngine = FXCollections.observableArrayList();
+    private ObservableList<String> carsDataListFuelConsumption = FXCollections.observableArrayList();
+    private ObservableList<String> carsDataListSpeed = FXCollections.observableArrayList();
+    private ObservableList<String> carsDataListDimensions = FXCollections.observableArrayList();
 
 
     // add controller
@@ -74,6 +85,67 @@ public class CarChooserController {
         CarChooserController.foreignNextCarCompare3Controller = nextCarCompare3Contr;
     }
 
+    @FXML
+    public void initialize() {
+        nextTabButton1.setDisable(true);
+        nextTabButton2.setDisable(true);
+        nextTabButton3.setDisable(true);
+        /*
+         * init ** FX controllers and methods from it
+         * */
+        this.brandsFXcontroller = new BrandsFXcontroller();
+        this.modelsFXcontroller = new ModelsFXcontroller();
+        this.fuelsFXcontroller = new FuelsFXcontroller();
+        this.capacitiesFXcontroller = new CapacitiesFXcontroller();
+        this.versionsFXcontroller = new VersionsFXcontroller();
+        this.carsCharacteristicsFXcontroller = new CarsCharacteristicsFXcontroller();
+        try {
+            this.brandsFXcontroller.initializeBrandsList();
+            this.modelsFXcontroller.initializeModelsList();
+            this.fuelsFXcontroller.initializeFuelsList();
+            this.capacitiesFXcontroller.initializeCapacitiesList();
+            this.versionsFXcontroller.initializeVersionsList();
+            propertyBindingsForComboboxes();
+        } catch (ApplicationException e) {
+            DialogWindows.errorDialog(e.getMessage());
+        }
+        //setting item in combo box
+        this.brandChoiceComboBox.setItems(brandsFXcontroller.getBrandsList());
+        this.modelChoiceComboBox.setItems(modelsFXcontroller.getModelsList());
+        this.fuelChoiceComboBox.setItems(fuelsFXcontroller.getFuelsList());
+        this.capacityChoiceComboBox.setItems(capacitiesFXcontroller.getCapacityList());
+        this.versionChoiceComboBox.setItems(versionsFXcontroller.getVersionsList());
+
+        //activate Controllers class
+        CarCompareController.setForeignCarChooserController(this);
+        NextCarCompareController.setForeignCarChooserController(this);
+        NextCarCompare2Controller.setForeignCarChooserController(this);
+        NextCarCompare3Controller.setForeignCarChooserController(this);
+        // bind every label of users choice
+        BooleanBinding labelsAreSelected = new BooleanBinding() {
+            {
+                super.bind(brandLabel.textProperty(), modelLabel.textProperty(), fuelLabel.textProperty(),
+                        capacityLabel.textProperty(), versionLabel.textProperty());
+            }
+
+            // check if every label is not empty
+            @Override
+            protected boolean computeValue() {
+                try {
+                    return brandLabel.getText().equals("") || modelLabel.getText().equals("")
+                            || fuelLabel.getText().equals("") || capacityLabel.getText().equals("")
+                            || versionLabel.getText().equals("");
+                } catch (Exception e) {
+                    DialogWindows.errorDialog(e.getMessage());
+                    System.out.println(e);
+                    // TO DO add window info or error
+                }
+                return false;
+            }
+        };
+        selectCarButton.disableProperty().bind(labelsAreSelected);
+    }
+
     // CLOSE car chooser window on cancel button and turn OFF chosen column
     @FXML
     private void cancelButton(ActionEvent e) {
@@ -83,7 +155,7 @@ public class CarChooserController {
         if (foreignNextCarCompareController != null) {
             foreignNextCarCompareController.setIdentifyColumnForDelete(0);
         }
-        System.out.println("metoda OFF");
+        //metoda OFF");
     }
 
     // SELECT from brand combobox TAB 1
@@ -94,6 +166,13 @@ public class CarChooserController {
                     fuelChoiceComboBox.getSelectionModel().isEmpty() &&
                     capacityChoiceComboBox.getSelectionModel().isEmpty() &&
                     versionChoiceComboBox.getSelectionModel().isEmpty()) {
+                try {
+                    this.modelsFXcontroller.initializeFilteredModelsList();
+                } catch (ApplicationException e) {
+                    DialogWindows.errorDialog(e.getMessage());
+                    System.out.println(e);
+                }
+
             } else {
                 brandLabel.setText("");
                 modelLabel.setText("");
@@ -134,6 +213,13 @@ public class CarChooserController {
                 if (fuelChoiceComboBox.getSelectionModel().isEmpty() &&
                         capacityChoiceComboBox.getSelectionModel().isEmpty() &&
                         versionChoiceComboBox.getSelectionModel().isEmpty()) {
+                    try {
+                        this.fuelsFXcontroller.initializeFilteredFuelsList();
+                       //this.capacitiesFXcontroller.initializeFilteredCapacitiesList();
+                        this.versionsFXcontroller.initializeFilteredVersionsList();
+                    } catch (ApplicationException e) {
+                        DialogWindows.errorDialog(e.getMessage());
+                    }
                 } else {
                     modelLabel.setText("");
                     fuelLabel.setText("");
@@ -167,10 +253,13 @@ public class CarChooserController {
     public void selectFuelChoiceComboBox() {
         try {
             if (fuelChoiceComboBox.getValue() != null) {
-
                 if (capacityChoiceComboBox.getSelectionModel().isEmpty() &&
                         versionChoiceComboBox.getSelectionModel().isEmpty()) {
-
+                    try {
+                        this.capacitiesFXcontroller.initializeFilteredCapacitiesList();
+                    } catch (ApplicationException e) {
+                        DialogWindows.errorDialog(e.getMessage());
+                    }
                 } else {
                     fuelLabel.setText("");
                     capacityLabel.setText("");
@@ -188,14 +277,17 @@ public class CarChooserController {
             DialogWindows.errorDialog(exc.getMessage());
         }
     }
-
     // select from capacity combobox TAB 3
     @FXML
     public void selectCapacityChoiceComboBox() {
         try {
             if (capacityChoiceComboBox.getValue() != null) {
                 if (versionChoiceComboBox.getSelectionModel().isEmpty()) {
-
+                    try {
+                        this.versionsFXcontroller.initializeFilteredVersionsList();
+                    } catch (ApplicationException e) {
+                        DialogWindows.errorDialog(e.getMessage());
+                    }
                 } else {
                     capacityLabel.setText("");
                     versionLabel.setText("");
@@ -232,194 +324,396 @@ public class CarChooserController {
         }
     }
 
-    // activate button in main window and set data in GridPanes
+    // 'column 0' is column build from carCompareWindow.fxml
+    private void fillListvievColumn0() {
+        clearCharacteristicsList();
+        try {
+            initFilteredListForListvievs();
+            // insert lists of characteristics into  ListViev node
+            foreignCarCompareController.getPriceListViev0().setItems(carsDataListPrices);
+            foreignCarCompareController.getDimensionListviev0().setItems(carsDataListDimensions);
+            foreignCarCompareController.getEngineListViev0().setItems(carsDataListEngine);
+            foreignCarCompareController.getFuelListviev0().setItems(carsDataListFuelConsumption);
+            foreignCarCompareController.getSpeedListViev0().setItems(carsDataListSpeed);
+            refreshListviev0();
+        } catch (ApplicationException e) {
+            DialogWindows.errorDialog(e.getMessage());
+            System.out.println(e);
+        }
+    }
+
+    // 'column 1' is column build from nextCarCompare1Window.fxml
+    private void fillListvievColumn1() {
+        clearCharacteristicsList();
+        try {
+            initFilteredListForListvievs();
+            // insert lists of characteristics into ListViev node
+            foreignNextCarCompareController.getPriceListViev1().setItems(carsDataListPrices);
+            foreignNextCarCompareController.getDimensionListviev1().setItems(carsDataListDimensions);
+            foreignNextCarCompareController.getEngineListViev1().setItems(carsDataListEngine);
+            foreignNextCarCompareController.getFuelListviev1().setItems(carsDataListFuelConsumption);
+            foreignNextCarCompareController.getSpeedListViev1().setItems(carsDataListSpeed);
+            refreshListViev1();
+        } catch (ApplicationException e) {
+            DialogWindows.errorDialog(e.getMessage());
+            System.out.println(e);
+        }
+    }
+
+    // 'column 2' is column build from nextCarCompare2Window.fxml
+    private void fillListvievColumn2() {
+        clearCharacteristicsList();
+        try {
+            initFilteredListForListvievs();
+            // insert lists of characteristics into ListViev node
+            foreignNextCarCompare2Controller.getPriceListViev2().setItems(carsDataListPrices);
+            foreignNextCarCompare2Controller.getDimensionListviev2().setItems(carsDataListDimensions);
+            foreignNextCarCompare2Controller.getEngineListViev2().setItems(carsDataListEngine);
+            foreignNextCarCompare2Controller.getFuelListviev2().setItems(carsDataListFuelConsumption);
+            foreignNextCarCompare2Controller.getSpeedListViev2().setItems(carsDataListSpeed);
+            refreshListViev2();
+        } catch (ApplicationException e) {
+            DialogWindows.errorDialog(e.getMessage());
+            System.out.println(e);
+        }
+    }
+
+    // 'column 3' is column build from nextCarCompare3Window.fxml
+    private void fillListvievColumn3() {
+        clearCharacteristicsList();
+        try {
+            initFilteredListForListvievs();
+            // insert lists of characteristics into ListViev node
+            foreignNextCarCompare3Controller.getPriceListViev3().setItems(carsDataListPrices);
+            foreignNextCarCompare3Controller.getDimensionListviev3().setItems(carsDataListDimensions);
+            foreignNextCarCompare3Controller.getEngineListViev3().setItems(carsDataListEngine);
+            foreignNextCarCompare3Controller.getFuelListviev3().setItems(carsDataListFuelConsumption);
+            foreignNextCarCompare3Controller.getSpeedListViev3().setItems(carsDataListSpeed);
+            refreshListViev3();
+        } catch (ApplicationException e) {
+            DialogWindows.errorDialog(e.getMessage());
+            System.out.println(e);
+        }
+    }
+
+    //initialize method from CommonDao for filtering data, set 'lastIndex' for searching only last item in list
+    private void initFilteredListForListvievs() throws ApplicationException {
+        carsCharacteristicsFXcontroller.initFilteredListCarsCharacteristic();
+        // get last index of list
+        int lastIndex = carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().size() - 1;
+        if (lastIndex >= 0) {
+            CarsCharacteristicsFX carsCharacteristicsFXGetLastItem = carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex);
+            insertDataIntoTempLists(carsCharacteristicsFXGetLastItem);
+        }
+    }
+
+    //get data from database and add it to various temporary list
+    private void insertDataIntoTempLists(CarsCharacteristicsFX carsCharacteristicsFXGetLastItem) {
+        carsDataListPrices.add(carsCharacteristicsFXGetLastItem.getPrice());
+        carsDataListPrices.add(carsCharacteristicsFXGetLastItem.getPriceDate().toString());
+
+        carsDataListEngine.add(carsCharacteristicsFXGetLastItem.getEngCapacity());
+        carsDataListEngine.add(carsCharacteristicsFXGetLastItem.getEngType());
+        carsDataListEngine.add(carsCharacteristicsFXGetLastItem.getCylinders());
+        carsDataListEngine.add(carsCharacteristicsFXGetLastItem.getTransmission());
+        carsDataListEngine.add(carsCharacteristicsFXGetLastItem.getGearboxSize());
+        carsDataListEngine.add(carsCharacteristicsFXGetLastItem.getEngPower());
+        carsDataListEngine.add(carsCharacteristicsFXGetLastItem.getTorque());
+
+        carsDataListDimensions.add(carsCharacteristicsFXGetLastItem.getWeight());
+        carsDataListDimensions.add(carsCharacteristicsFXGetLastItem.getLenght());
+        carsDataListDimensions.add(carsCharacteristicsFXGetLastItem.getHeight());
+        carsDataListDimensions.add(carsCharacteristicsFXGetLastItem.getWidth());
+        carsDataListDimensions.add(carsCharacteristicsFXGetLastItem.getWheeelbase());
+        carsDataListDimensions.add(carsCharacteristicsFXGetLastItem.getTrunk());
+        carsDataListDimensions.add(carsCharacteristicsFXGetLastItem.getDoors());
+
+        carsDataListFuelConsumption.add(carsCharacteristicsFXGetLastItem.getFuelConsCity());
+        carsDataListFuelConsumption.add(carsCharacteristicsFXGetLastItem.getFuelConsRoute());
+        carsDataListFuelConsumption.add(carsCharacteristicsFXGetLastItem.getFuelConsMixed());
+        carsDataListFuelConsumption.add(carsCharacteristicsFXGetLastItem.getTankCapacity());
+
+        carsDataListSpeed.add(carsCharacteristicsFXGetLastItem.getAcceleration());
+        carsDataListSpeed.add(carsCharacteristicsFXGetLastItem.getTopSpeed());
+    }
+
+    private void refreshListviev0() {
+        foreignCarCompareController.getPriceListViev0().refresh();
+        foreignCarCompareController.getDimensionListviev0().refresh();
+        foreignCarCompareController.getEngineListViev0().refresh();
+        foreignCarCompareController.getFuelListviev0().refresh();
+        foreignCarCompareController.getSpeedListViev0().refresh();
+    }
+
+    private void refreshListViev1() {
+        foreignNextCarCompareController.getPriceListViev1().refresh();
+        foreignNextCarCompareController.getPriceListViev1().refresh();
+        foreignNextCarCompareController.getPriceListViev1().refresh();
+        foreignNextCarCompareController.getPriceListViev1().refresh();
+        foreignNextCarCompareController.getPriceListViev1().refresh();
+    }
+
+    private void refreshListViev2() {
+        foreignNextCarCompare2Controller.getPriceListViev2().refresh();
+        foreignNextCarCompare2Controller.getPriceListViev2().refresh();
+        foreignNextCarCompare2Controller.getPriceListViev2().refresh();
+        foreignNextCarCompare2Controller.getPriceListViev2().refresh();
+        foreignNextCarCompare2Controller.getPriceListViev2().refresh();
+    }
+
+    private void refreshListViev3() {
+        foreignNextCarCompare3Controller.getPriceListViev3().refresh();
+        foreignNextCarCompare3Controller.getPriceListViev3().refresh();
+        foreignNextCarCompare3Controller.getPriceListViev3().refresh();
+        foreignNextCarCompare3Controller.getPriceListViev3().refresh();
+        foreignNextCarCompare3Controller.getPriceListViev3().refresh();
+    }
+
+    private void clearCharacteristicsList() {
+        carsDataListPrices.clear();
+        carsDataListEngine.clear();
+        carsDataListSpeed.clear();
+        carsDataListFuelConsumption.clear();
+        carsDataListDimensions.clear();
+    }
+
+    /* activate button in main window and set data in GridPanes
+    0 - column exist but is empty
+    1 - column exist and it's not empty
+    "-" - column don't exist
+    
+    */
     @FXML
     public void setSelected(ActionEvent e) {
-        System.out.println("wielkosc listy: " + foreignMainController.getListOfGridPaneColumns().size());
         try {
             foreignMainController.activateAddCarButtton();
-            if ((foreignNextCarCompareController == null & foreignNextCarCompare2Controller == null & foreignNextCarCompare3Controller == null) || foreignCarCompareController.getIdFirstColumn() == 1) { //jesli druga columna nie istnieje
-                System.out.println("1.zaznaczono change w pierwszym");
+            if ((foreignNextCarCompareController == null & foreignNextCarCompare2Controller == null & foreignNextCarCompare3Controller == null) || foreignCarCompareController.getIdFirstColumn() == 1) {//2,3,4 column don't exist
+                //first columns checked
                 foreignCarCompareController.setMainColumn();
                 foreignCarCompareController.setIdFirstColumn(0);
-            }//jesli nastepne kolumny istnieją
+                fillListvievColumn0();
+            }//instructions if 2,3,4 column exist
             else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller == null & foreignNextCarCompare3Controller == null) {
                 System.out.println("0,-,-");
                 foreignNextCarCompareController.setNextColumn();
                 foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
-
+                fillListvievColumn1();
             } else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare3Controller == null) {
                 System.out.println("0,0,-");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
+// testing
+                } else {
+                    foreignNextCarCompare2Controller.setNextColumn();
+                    foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 }
             } else if (!foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller == null & foreignNextCarCompare3Controller == null) {
                 System.out.println("1,-,-");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 }
             } else if (!foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare3Controller == null) {
                 System.out.println("1,1,-");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 }
             } else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare3Controller == null) {
                 System.out.println("0,1,-");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
-                }else{//test
+                    fillListvievColumn2();
+                } else {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 }
             } else if (!foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare3Controller == null) {
                 System.out.println("1,0,-");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 }
             } else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
                 System.out.println("0,0,0");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else if (foreignNextCarCompare3Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
-                }else {//test
+                    fillListvievColumn3();
+                } else {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 }
             } else if (!foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
                 System.out.println("1,0,0");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else if (foreignNextCarCompare3Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
-                }else {//test
+                    fillListvievColumn3();
+                } else {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 }
             } else if (!foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
                 System.out.println("1,1,0");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else if (foreignNextCarCompare3Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn3();
                 } else {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn3();
                 }
             } else if (!foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
                 System.out.println("1,1,1");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else if (foreignNextCarCompare3Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn3();
                 }
             } else if (!foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
                 System.out.println("1,0,1");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else if (foreignNextCarCompare3Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
-                }else {
+                    fillListvievColumn3();
+                } else {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 }
-            }
-            else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
+            } else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
                 System.out.println("0,1,1");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else if (foreignNextCarCompare3Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn3();
                 } else {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 }
-            }else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
+            } else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
                 System.out.println("0,0,1");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else if (foreignNextCarCompare3Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
-                }else{//test
+                    fillListvievColumn3();
+                } else {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 }
             } else if (foreignNextCarCompareController.getNextSelectedCarTitleLabel().getText().isEmpty() & !foreignNextCarCompare2Controller.getNextSelectedCarTitleLabel().getText().isEmpty() & foreignNextCarCompare3Controller.getNextSelectedCarTitleLabel().getText().isEmpty()) {
                 System.out.println("0,1,0");
                 if (foreignNextCarCompareController.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 } else if (foreignNextCarCompare2Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare2Controller.setNextColumn();
                     foreignNextCarCompare2Controller.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn2();
                 } else if (foreignNextCarCompare3Controller.getIdentifyColumnForChangeCar() == 1) {
                     foreignNextCarCompare3Controller.setNextColumn();
                     foreignNextCarCompare3Controller.setIdentifyColumnForChangeCar(0);
-                }else{//test
+                    fillListvievColumn3();
+                } else {
                     foreignNextCarCompareController.setNextColumn();
                     foreignNextCarCompareController.setIdentifyColumnForChangeCar(0);
+                    fillListvievColumn1();
                 }
             }
         } catch (
-                Exception exc)
-        {
+                Exception exc) {
             DialogWindows.errorDialog(exc.getMessage());
-            System.out.println(exc);
         }
         // hiding this window after click button
         ((Node) (e.getSource())).
@@ -432,75 +726,37 @@ public class CarChooserController {
 
     }
 
-    private void turnOFFid() {
-        foreignCarCompareController.setIdFirstColumn(0);
-        foreignNextCarCompareController.setIdentifyColumnForDelete(0);
+    private void propertyBindingsForComboboxes() {
+        this.brandChoiceComboBox.valueProperty().bindBidirectional(this.brandsFXcontroller.getBrandsFxObjectProperty().brandsFXObjectPropertyProperty());
+        this.brandChoiceComboBox.valueProperty().bindBidirectional(this.modelsFXcontroller.getModelsFxObjectProperty().brandsFXObjectPropertyProperty());
+        this.brandChoiceComboBox.valueProperty().bindBidirectional(this.fuelsFXcontroller.getFuelsFXObjectProperty().brandsFXObjectPropertyProperty());
+        this.brandChoiceComboBox.valueProperty().bindBidirectional(this.capacitiesFXcontroller.getCapacitiesFXObjectProperty().brandsFXObjectPropertyProperty());
+        this.brandChoiceComboBox.valueProperty().bindBidirectional(this.versionsFXcontroller.getVersionsObjectProperty().brandsFXObjectPropertyProperty());
+        this.brandChoiceComboBox.valueProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().brandsFXObjectPropertyProperty());
+
+        this.modelChoiceComboBox.valueProperty().bindBidirectional(this.modelsFXcontroller.getModelsFxObjectProperty().modelsFXObjectPropertyProperty());
+        this.modelChoiceComboBox.valueProperty().bindBidirectional(this.modelsFXcontroller.getModelsFxObjectProperty().modelsFXObjectPropertyProperty());
+        this.modelChoiceComboBox.valueProperty().bindBidirectional(this.fuelsFXcontroller.getFuelsFXObjectProperty().modelsFXObjectPropertyProperty());
+        this.modelChoiceComboBox.valueProperty().bindBidirectional(this.capacitiesFXcontroller.getCapacitiesFXObjectProperty().modelsFXObjectPropertyProperty());
+        this.modelChoiceComboBox.valueProperty().bindBidirectional(this.versionsFXcontroller.getVersionsObjectProperty().modelsFXObjectPropertyProperty());
+        this.modelChoiceComboBox.valueProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().modelsFXObjectPropertyProperty());
+
+        this.fuelChoiceComboBox.valueProperty().bindBidirectional(this.fuelsFXcontroller.getFuelsFXObjectProperty().fuelsFXObjectPropertyProperty());
+        this.fuelChoiceComboBox.valueProperty().bindBidirectional(this.fuelsFXcontroller.getFuelsFXObjectProperty().fuelsFXObjectPropertyProperty());
+        this.fuelChoiceComboBox.valueProperty().bindBidirectional(this.capacitiesFXcontroller.getCapacitiesFXObjectProperty().fuelsFXObjectPropertyProperty());
+        this.fuelChoiceComboBox.valueProperty().bindBidirectional(this.versionsFXcontroller.getVersionsObjectProperty().fuelsFXObjectPropertyProperty());
+        this.fuelChoiceComboBox.valueProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().fuelsFXObjectPropertyProperty());
+
+        this.capacityChoiceComboBox.valueProperty().bindBidirectional(this.capacitiesFXcontroller.getCapacitiesFXObjectProperty().capacitiesFXObjectPropertyProperty());
+        this.capacityChoiceComboBox.valueProperty().bindBidirectional(this.capacitiesFXcontroller.getCapacitiesFXObjectProperty().capacitiesFXObjectPropertyProperty());
+        this.capacityChoiceComboBox.valueProperty().bindBidirectional(this.versionsFXcontroller.getVersionsObjectProperty().capacitiesFXObjectPropertyProperty());
+        this.capacityChoiceComboBox.valueProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().capacitiesFXObjectPropertyProperty());
+
+        this.versionChoiceComboBox.valueProperty().bindBidirectional(this.versionsFXcontroller.getVersionsObjectProperty().versionsFXObjectPropertyProperty());
+        this.versionChoiceComboBox.valueProperty().bindBidirectional(this.versionsFXcontroller.getVersionsObjectProperty().versionsFXObjectPropertyProperty());
+        this.versionChoiceComboBox.valueProperty().bindBidirectional(this.carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObjectProperty().versionsFXObjectPropertyProperty());
     }
 
-    @FXML
-    public void initialize() {
-        nextTabButton1.setDisable(true);
-        nextTabButton2.setDisable(true);
-        nextTabButton3.setDisable(true);
-        /*
-      * init ** FX controllers and methods from it
-      * */
-        //brands
-        this.brandsFXcontroller = new BrandsFXcontroller();
-        //models
-        ModelsFXcontroller modelsFXcontroller = new ModelsFXcontroller();
-        //fuels
-        FuelsFXcontroller fuelsFXcontroller = new FuelsFXcontroller();
-        //capacities
-        CapacitiesFXcontroller capacitiesFXcontroller = new CapacitiesFXcontroller();
-        //versions
-        VersionsFXcontroller versionsFXcontroller = new VersionsFXcontroller();
-        try {
-            this.brandsFXcontroller.initializeBrandsList();
-            modelsFXcontroller.initializeModelsList();
-            fuelsFXcontroller.initializeFuelsList();
-            capacitiesFXcontroller.initializeCapacitiesList();
-            versionsFXcontroller.initializeVersionsList();
-        } catch (ApplicationException e) {
-            DialogWindows.errorDialog(e.getMessage());
-        }
-
-        //setting item in combo box
-        this.brandChoiceComboBox.setItems(this.brandsFXcontroller.getBrandsList());
-        this.modelChoiceComboBox.setItems(modelsFXcontroller.getModelsList());
-        this.fuelChoiceComboBox.setItems(fuelsFXcontroller.getFuelsList());
-        this.capacityChoiceComboBox.setItems(capacitiesFXcontroller.getCapacityList());
-        this.versionChoiceComboBox.setItems(versionsFXcontroller.getVersionsList());
-
-        //activate Controllers class
-        CarCompareController.setForeignCarChooserController(this);
-        NextCarCompareController.setForeignCarChooserController(this);
-        NextCarCompare2Controller.setForeignCarChooserController(this);
-        NextCarCompare3Controller.setForeignCarChooserController(this);
-        // bind every label of users choice
-        BooleanBinding labelsAreSelected = new BooleanBinding() {
-            {
-                super.bind(brandLabel.textProperty(), modelLabel.textProperty(), fuelLabel.textProperty(),
-                        capacityLabel.textProperty(), versionLabel.textProperty());
-            }
-
-            // check if every label is not empty
-            @Override
-            protected boolean computeValue() {
-                try {
-                    return brandLabel.getText().equals("") || modelLabel.getText().equals("")
-                            || fuelLabel.getText().equals("") || capacityLabel.getText().equals("")
-                            || versionLabel.getText().equals("");
-                } catch (Exception e) {
-                    DialogWindows.errorDialog(e.getMessage());
-                    System.out.println(e);
-                    // TO DO add window info or error
-                }
-                return false;
-            }
-        };
-        selectCarButton.disableProperty().bind(labelsAreSelected);
-    }
 
     public Label getBrandLabel() {
         return brandLabel;

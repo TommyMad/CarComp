@@ -22,7 +22,7 @@ import java.util.List;
 public class CapacitiesFXcontroller {
     private ObservableList<CapacitiesFX> capacityList = FXCollections.observableArrayList();
     private ObjectProperty<CapacitiesFX> capacityListItem = new SimpleObjectProperty<>();
-    private ObjectProperty<CapacitiesFX>capacitiesFXObjectProperty=new SimpleObjectProperty<>(new CapacitiesFX());
+    private ObjectProperty<CapacitiesFX> capacitiesFXObjectProperty = new SimpleObjectProperty<>(new CapacitiesFX());
 
     // method saving to database f.ex. after clicking button
     public void saveCapacityInDatabase() throws ApplicationException {
@@ -34,8 +34,8 @@ public class CapacitiesFXcontroller {
         CarBrand tempCarBrand = carBrandDao.findById(CarBrand.class, this.getCapacitiesFXObjectProperty().getBrandsFXObjectProperty().getId());
         CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
         CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getCapacitiesFXObjectProperty().getModelsFXObjectProperty().getId());
-        CarFuelDao carFuelDao=new CarFuelDao(DBManager.getConnectionSource());
-        CarFuel tempCarFuel=carFuelDao.findById(CarFuel.class, this.getCapacitiesFXObjectProperty().getFuelsFXObjectProperty().getId());
+        CarFuelDao carFuelDao = new CarFuelDao(DBManager.getConnectionSource());
+        CarFuel tempCarFuel = carFuelDao.findById(CarFuel.class, this.getCapacitiesFXObjectProperty().getFuelsFXObjectProperty().getId());
 
         // set foreign and normal data
         carCapacity.setBrand(tempCarBrand);
@@ -63,12 +63,13 @@ public class CapacitiesFXcontroller {
         });
         DBManager.closeConnectionSource();
     }
+    // sort capacities by fuel id
     public void initializeFilteredCapacitiesList() throws ApplicationException {
         CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
         CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getCapacitiesFXObjectProperty().getModelsFXObjectProperty().getId());
 
         CarCapacityDao carCapacityDao = new CarCapacityDao(DBManager.getConnectionSource());
-        List<CarCapacity> listOfFilteredCapacities = carCapacityDao.queryForEq(CarCapacity.class,"FOREIGN_MODEL_ID",tempCarModel);
+        List<CarCapacity> listOfFilteredCapacities = carCapacityDao.queryForEq(CarCapacity.class, "FOREIGN_MODEL_ID", tempCarModel);
         capacityList.clear();
 
         listOfFilteredCapacities.forEach((c) -> {
@@ -78,6 +79,7 @@ public class CapacitiesFXcontroller {
         });
         DBManager.closeConnectionSource();
     }
+
     public ObservableList<CapacitiesFX> getCapacityList() {
         return capacityList;
     }

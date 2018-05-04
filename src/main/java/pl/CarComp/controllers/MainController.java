@@ -42,15 +42,9 @@ public class MainController {
     private Button addNextCarButton;
     @FXML
     private AnchorPane centerPane;
-    @FXML
-    private MenuBar mainMenuBar;
 
     //listOfGridPaneColumns of nodes inside main window
     private ObservableList<Node> listOfGridPaneColumns = FXCollections.observableArrayList();
-    //checking
-    private ArrayList listOfFXMLResources = new ArrayList();
-    private ListIterator iteratorFxml = listOfFXMLResources.listIterator();
-
     //foreign controllers to get access to them
     private static CarCompareController foreign2CarCompareController;
     private static NextCarCompareController foreignNextCarCompareController;

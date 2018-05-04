@@ -2,6 +2,7 @@ package pl.CarComp.controllers.controllersDubler;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import pl.CarComp.controllers.CarChooserController;
 import pl.CarComp.controllers.CarCompareController;
@@ -13,6 +14,8 @@ public class NextCarCompare2Controller {
     private GridPane nextGridPane;
     @FXML
     private Label nextSelectedCarTitleLabel;
+    @FXML
+    private ListView<String> priceListViev2,engineListViev2,speedListViev2,dimensionListviev2,fuelListviev2;
     private int identifyColumnForDelete;
     private int identifyColumnForChangeCar;
     private int identifyColumnForEdit;
@@ -104,6 +107,46 @@ public class NextCarCompare2Controller {
 
     public void setIdentifyColumnForChangeCar(int identifyColumnForChangeCar) {
         this.identifyColumnForChangeCar = identifyColumnForChangeCar;
+    }
+
+    public ListView<String> getPriceListViev2() {
+        return priceListViev2;
+    }
+
+    public void setPriceListViev2(ListView<String> priceListViev2) {
+        this.priceListViev2 = priceListViev2;
+    }
+
+    public ListView<String> getEngineListViev2() {
+        return engineListViev2;
+    }
+
+    public void setEngineListViev2(ListView<String> engineListViev2) {
+        this.engineListViev2 = engineListViev2;
+    }
+
+    public ListView<String> getSpeedListViev2() {
+        return speedListViev2;
+    }
+
+    public void setSpeedListViev2(ListView<String> speedListViev2) {
+        this.speedListViev2 = speedListViev2;
+    }
+
+    public ListView<String> getDimensionListviev2() {
+        return dimensionListviev2;
+    }
+
+    public void setDimensionListviev2(ListView<String> dimensionListviev2) {
+        this.dimensionListviev2 = dimensionListviev2;
+    }
+
+    public ListView<String> getFuelListviev2() {
+        return fuelListviev2;
+    }
+
+    public void setFuelListviev2(ListView<String> fuelListviev2) {
+        this.fuelListviev2 = fuelListviev2;
     }
 }
 

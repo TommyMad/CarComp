@@ -19,13 +19,12 @@ public class CarCapacity implements BaseModel {
 
     @DatabaseField(columnName = FOREIGN_BRAND_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarBrand brand;
-
     @DatabaseField(columnName = FOREIGN_MODEL_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarModel model;
     @DatabaseField(columnName = FOREIGN_FUEL_ID, foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true,canBeNull = false)
     private CarFuel fuel;
 
-    @DatabaseField(columnName = "CAPACITY", canBeNull = false,unique = true)
+    @DatabaseField(columnName = "CAPACITY", canBeNull = false)
     private String capacity;
 
     public int getId() {

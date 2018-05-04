@@ -111,9 +111,12 @@ public abstract class CommonDao {
             Dao<T,I> dao = getDao(cls);
 
             return dao.queryBuilder().where()
-                    .eq("FOREIGN_BRAND_ID",value).and()
-                    .eq("FOREIGN_MODEL_ID",value2).and()
-                    .eq("FOREIGN_VERSION_ID",value3).query();
+                    .eq("FOREIGN_BRAND_ID",value)
+                    .and()
+                    .eq("FOREIGN_MODEL_ID",value2)
+                    .and()
+                    .eq("FOREIGN_VERSION_ID",value3)
+                    .query();
         } catch (SQLException e) {
             System.out.println(e.getCause().getMessage());
             throw new ApplicationException("Problem");
@@ -125,6 +128,21 @@ public abstract class CommonDao {
             Dao<T, I> dao = getDao(cls);
 
             return dao.queryForEq(fieldname, value);
+        } catch (SQLException e) {
+            System.out.println(e.getCause().getMessage());
+            throw new ApplicationException("Problem");
+        }
+    }
+
+    public <T extends BaseModel, I> List<T> queryRawForVersions(Class<T> cls, Object value, Object value2) throws ApplicationException {
+        try {
+            Dao<T,I> dao = getDao(cls);
+
+            return dao.queryBuilder().where()
+                    .eq("FOREIGN_MODEL_ID",value)
+                    .and()
+                    .eq("FOREIGN_CAPACITY_ID",value2)
+                    .query();
         } catch (SQLException e) {
             System.out.println(e.getCause().getMessage());
             throw new ApplicationException("Problem");

@@ -35,7 +35,6 @@ public class CarsCharacteristicsFXcontroller {
     private ObservableList<VersionsFX> versionsFXObservableList = FXCollections.observableArrayList();
     private ObservableList<CarsCharacteristicsFX> carsCharacteristicsFXObservableList = FXCollections.observableArrayList();
 
-    //private List<CarsCharacteristicsFX> temporaryCarsCharacteristicsList = new ArrayList<>();
 
     public void initCarsCharacteristicFXcontroller() throws ApplicationException {
         initBrandsList();
@@ -165,9 +164,7 @@ public class CarsCharacteristicsFXcontroller {
         carsCharacteristicsFXObservableList.clear();
         carsCharacteristicFilteredList.forEach((c)->{
             CarsCharacteristicsFX carsCharacteristicsFX=ConverterCarCharacteristics.convertToCarsCharacteristicFX(c);
-
             this.carsCharacteristicsFXObservableList.add(carsCharacteristicsFX);
-            System.out.println("wielkosc fxobservable "+carsCharacteristicsFXObservableList.size()+" "+carsCharacteristicsFXObservableList);
         });
         DBManager.closeConnectionSource();
 

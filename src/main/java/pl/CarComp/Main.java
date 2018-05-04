@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import pl.CarComp.database.dbUtils.DBManager;
+import pl.CarComp.utils.DatabasewithExampleData;
 import pl.CarComp.utils.DialogWindows;
 import pl.CarComp.utils.FXMLutils;
 
@@ -30,6 +31,9 @@ public class Main extends Application {
 	    primaryStage.show();
 	    
 	    DBManager.initDatabase();
+
+	    //initialize example data for testing only
+		DatabasewithExampleData.fillwithExamples();
 
 
 	} catch (Exception e) {

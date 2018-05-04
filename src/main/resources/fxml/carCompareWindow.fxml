@@ -15,7 +15,7 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.CarComp.controllers.CarCompareController">
    <content>
-      <HBox fx:id="mainHbox">
+      <HBox fx:id="mainHbox" prefHeight="750.0">
          <children>
             <GridPane fx:id="gridPaneCarCompare" gridLinesVisible="true" hgap="5.0" vgap="5.0">
                <rowConstraints>
@@ -23,18 +23,17 @@
                   <RowConstraints prefHeight="50.0" />
                   <RowConstraints prefHeight="165.0" />
                   <RowConstraints prefHeight="50.0" />
-                  <RowConstraints prefHeight="100.0" />
-                  <RowConstraints prefHeight="150.0" />
+                  <RowConstraints prefHeight="95.0" />
+                  <RowConstraints prefHeight="165.0" />
                </rowConstraints>
                <children>
                   <VBox alignment="TOP_CENTER" spacing="5.0">
                      <children>
                         <Label fx:id="selectedCarTitleLabel" />
-                        <ImageView fitHeight="140.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="140.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
                         <HBox alignment="CENTER" spacing="10.0">
                            <children>
                               <Button fx:id="changeCarButton" mnemonicParsing="false" onAction="#changeCar" text="Zmień pojazd" />
-                              <Button fx:id="editDataButton" mnemonicParsing="false" onAction="#editCarData" text="Edytuj dane" />
                            </children>
                         </HBox>
                      </children>
@@ -47,32 +46,48 @@
                   </VBox>
                   <AnchorPane GridPane.rowIndex="1">
                      <children>
-                        <ListView prefHeight="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="priceListViev0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="163.0" layoutY="6.0" text="zł" />
                      </children>
                   </AnchorPane>
                   <AnchorPane GridPane.rowIndex="2">
                      <children>
-                        <ListView prefHeight="165.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="engineListViev0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="163.0" layoutY="3.0" text="cm3" />
+                        <Label layoutX="163.0" layoutY="119.0" text="KM/obr. min." />
+                        <Label layoutX="163.0" layoutY="139.0" text="Nm/obr. min." />
                      </children>
                   </AnchorPane>
                   <AnchorPane GridPane.rowIndex="3">
                      <children>
-                        <ListView prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="speedListViev0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="163.0" layoutY="6.0" text="sekund" />
+                        <Label layoutX="163.0" layoutY="28.0" text="km/h" />
                      </children>
                   </AnchorPane>
                   <AnchorPane GridPane.rowIndex="4">
                      <children>
-                        <ListView prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="fuelListviev0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="163.0" layoutY="6.0" text="l/100 km" />
+                        <Label layoutX="163.0" layoutY="29.0" text="l/100 km" />
+                        <Label layoutX="163.0" layoutY="53.0" text="l/100 km" />
+                        <Label layoutX="163.0" layoutY="72.0" text="litrów" />
                      </children>
                   </AnchorPane>
                   <AnchorPane GridPane.rowIndex="5">
                      <children>
-                        <ListView prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="dimensionListviev0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="163.0" layoutY="29.0" text="mm" />
+                        <Label layoutX="163.0" layoutY="53.0" text="mm" />
+                        <Label layoutX="163.0" layoutY="76.0" text="mm" />
+                        <Label layoutX="163.0" layoutY="97.0" text="mm" />
+                        <Label layoutX="163.0" layoutY="121.0" text="litrów" />
+                        <Label layoutX="163.0" layoutY="5.0" text="kg" />
                      </children>
                   </AnchorPane>
                </children>
                <columnConstraints>
-                  <ColumnConstraints />
+                  <ColumnConstraints prefWidth="260.0" />
                </columnConstraints>
             </GridPane>
          </children>

@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainBorderP" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.CarComp.controllers.MainController">
+<BorderPane fx:id="mainBorderP" prefHeight="850.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.CarComp.controllers.MainController">
    <top>
       <AnchorPane prefHeight="68.0" prefWidth="700.0" BorderPane.alignment="CENTER">
          <children>
@@ -38,11 +43,8 @@
                <children>
                   <ToolBar prefHeight="50.0" prefWidth="700.0">
                     <items>
-                      <Button mnemonicParsing="false" onAction="#setComparisiontoDefault" text="Nowe" />
-                        <Button mnemonicParsing="false" text="Wygląd" />
-                        <Button mnemonicParsing="false" text="Info" />
-                        <Button mnemonicParsing="false" text="Zapisz" />
-                        <Button mnemonicParsing="false" onAction="#openAddCarToBase" text="Dodaj do bazy" />
+                        <Button mnemonicParsing="false" onAction="#showAboutInformation" prefHeight="40.0" prefWidth="50.0" text="Info" />
+                        <Button mnemonicParsing="false" onAction="#openAddCarToBase" prefHeight="40.0" text="Dodaj do bazy" />
                     </items>
                   </ToolBar>
                </children>
@@ -51,18 +53,75 @@
       </AnchorPane>
    </top>
    <left>
-      <SplitPane prefWidth="100.0" BorderPane.alignment="CENTER">
-         <items>
-            <AnchorPane>
+      <HBox prefWidth="146.0">
+         <children>
+            <VBox prefHeight="722.0" prefWidth="140.0">
                <children>
-                  <VBox layoutY="16.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Button fx:id="addNextCarButton" mnemonicParsing="false" onAction="#addNextCar" text="Dodaj kolejny" />
-                     </children></VBox>
+                  <Button fx:id="addNextCarButton" mnemonicParsing="false" onAction="#addNextCar" prefWidth="95.0" text="Dodaj kolejny">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Accordion prefHeight="704.0" prefWidth="140.0">
+                    <panes>
+                      <TitledPane animated="false" prefHeight="706.0" prefWidth="140.0" text="Legenda">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="683.0" prefWidth="138.0">
+                                 <children>
+                                    <VBox layoutX="12.0" layoutY="142.0" spacing="6.0">
+                                       <children>
+                                          <Label text="Cena" />
+                                          <Label text="Data cennika" />
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="12.0" layoutY="195.0" spacing="6.0">
+                                       <children>
+                                          <Label text="Pojemność silnika" />
+                                          <Label text="Typ silnika" />
+                                           <Label text="Liczba cylindrów" />
+                                           <Label text="Rodzaj skrzyni biegów" />
+                                           <Label text="Liczba biegów" />
+                                           <Label text="Moc silnika" />
+                                           <Label text="Moment obrotowy" />
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="12.0" layoutY="519.0" prefHeight="126.0" prefWidth="115.0" spacing="6.0">
+                                       <children>
+                                           <Label text="Masa pojazdu" />
+                                           <Label text="Długość" />
+                                           <Label text="Wysokość" />
+                                           <Label text="Szerokość" />
+                                           <Label text="Rozstaw osi" />
+                                           <Label text="Pojemnosc bagażnika" />
+                                           <Label text="Liczba drzwi" />
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="12.0" layoutY="419.0" spacing="6.0">
+                                       <children>
+                                           <Label text="Pojemność baku" />
+                                           <Label text="Spalania (miasto)" />
+                                           <Label text="Spalanie (trasa)" />
+                                           <Label text="Spalanie średnie" />
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="12.0" layoutY="367.0" spacing="6.0">
+                                       <children>
+                                           <Label text="Przyspieszenie" />
+                                           <Label text="Prędkość maksymalna" />
+                                       </children>
+                                    </VBox>
+
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </TitledPane>
+                    </panes>
+                  </Accordion>
                </children>
-            </AnchorPane>
-         </items>
-      </SplitPane>
+            </VBox>
+            <Separator orientation="VERTICAL" prefWidth="5.0" />
+         </children>
+      </HBox>
    </left>
    <center>
       <AnchorPane fx:id="centerPane">
@@ -74,6 +133,6 @@
    
    </center>
    <bottom>
-      <AnchorPane minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane minHeight="-Infinity" prefHeight="19.0" prefWidth="1106.0" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>

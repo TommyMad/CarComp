@@ -62,24 +62,21 @@ public class FuelsFXcontroller {
     }
 
     public void initializeFilteredFuelsList() throws ApplicationException {
-        CarBrandDao carBrandDao = new CarBrandDao(DBManager.getConnectionSource());
-        CarBrand tempCarBrand = carBrandDao.findById(CarBrand.class, this.getFuelsFXObjectProperty().getBrandsFXObjectProperty().getId());
         CarModelDao carModelDao = new CarModelDao(DBManager.getConnectionSource());
         CarModel tempCarModel = carModelDao.findById(CarModel.class, this.getFuelsFXObjectProperty().getModelsFXObjectProperty().getId());
 
-
-    CarFuelDao carFuelDao = new CarFuelDao(DBManager.getConnectionSource());
-    List<CarFuel> listOffilteredFuels = carFuelDao.queryForEq(CarFuel.class,"FOREIGN_MODEL_ID",tempCarModel);
+        CarFuelDao carFuelDao = new CarFuelDao(DBManager.getConnectionSource());
+        List<CarFuel> listOffilteredFuels = carFuelDao.queryForEq(CarFuel.class, "FOREIGN_MODEL_ID", tempCarModel);
         fuelsList.clear();
-    // loop
-        listOffilteredFuels.forEach((c)->
-    {
-        // create new object FuelsFX model
-        FuelsFX fuelsFX = ConverterFuel.convertToFuelFX(c);
-        this.fuelsList.add(fuelsFX);
-    });
+        // loop
+        listOffilteredFuels.forEach((c) ->
+        {
+            // create new object FuelsFX model
+            FuelsFX fuelsFX = ConverterFuel.convertToFuelFX(c);
+            this.fuelsList.add(fuelsFX);
+        });
         DBManager.closeConnectionSource();
-}
+    }
 
     public ObservableList<FuelsFX> getFuelsList() {
         return fuelsList;
