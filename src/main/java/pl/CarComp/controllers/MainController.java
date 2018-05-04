@@ -26,11 +26,11 @@ import java.util.Optional;
 public class MainController {
 
     private static final String FXML_CAR_ADD_WINDOW_FXML = "/fxml/carAddWindow.fxml";
-    public static final String FXML_CAR_CHOOSE_WINDOW_FXML = "/fxml/carChooseWindow.fxml";
-    public static final String FXML_CAR_COMPARE_WINDOW_FXML = "/fxml/carCompareWindow.fxml";
-    public static final String FXML_NEXT_CAR_COMPARE_WINDOW_FXML = "/fxml/nextCarCompareWindow.fxml";
-    public static final String FXML_NEXT_CAR_COMPARE2_WINDOW_FXML = "/fxml/copiesOfNextCarCWindow/nextCarCompare2Window.fxml";
-    public static final String FXML_NEXT_CAR_COMPARE3_WINDOW_FXML = "/fxml/copiesOfNextCarCWindow/nextCarCompare3Window.fxml";
+    private static final String FXML_CAR_CHOOSE_WINDOW_FXML = "/fxml/carChooseWindow.fxml";
+    private static final String FXML_CAR_COMPARE_WINDOW_FXML = "/fxml/carCompareWindow.fxml";
+    private static final String FXML_NEXT_CAR_COMPARE_WINDOW_FXML = "/fxml/nextCarCompareWindow.fxml";
+    private static final String FXML_NEXT_CAR_COMPARE2_WINDOW_FXML = "/fxml/copiesOfNextCarCWindow/nextCarCompare2Window.fxml";
+    private static final String FXML_NEXT_CAR_COMPARE3_WINDOW_FXML = "/fxml/copiesOfNextCarCWindow/nextCarCompare3Window.fxml";
 
 
     @FXML
@@ -78,7 +78,6 @@ public class MainController {
     }
 
     // open car chooser window
-    //Button
     @FXML
     public void openCarChooserWindow() {
         loadCarChooserWindow();
@@ -87,14 +86,14 @@ public class MainController {
         listOfGridPaneColumns.add(foreign2CarCompareController.getGridPaneCarCompare());
     }
 
-    @FXML
     // shows About in Help menu bar
+    @FXML
     private void showAboutInformation() {
         DialogWindows.dialogAboutApplication();
     }
 
-    @FXML
     // confirmation when closing on exit X button
+    @FXML
     private void closeAppMenuButton() {
         Optional<ButtonType> result = DialogWindows.confirmationOnClose();
         if (result.get() == ButtonType.OK) {

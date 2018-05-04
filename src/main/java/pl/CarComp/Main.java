@@ -9,6 +9,10 @@ import pl.CarComp.utils.DatabasewithExampleData;
 import pl.CarComp.utils.DialogWindows;
 import pl.CarComp.utils.FXMLutils;
 
+/**
+ * author: Tomasz Madej
+ */
+
 public class Main extends Application {
 
     private static final String FXML_LOGIN_WINDOW = "/fxml/loginWindow.fxml";
