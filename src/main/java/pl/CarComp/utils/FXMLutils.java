@@ -10,8 +10,7 @@ public class FXMLutils {
 	try{
 	    return loader.load();
 	}catch (Exception e) {
-	    System.out.println(e);
-	    e.printStackTrace();
+		DialogWindows.errorDialog(e.getMessage());
 	}
 	return null;
     }

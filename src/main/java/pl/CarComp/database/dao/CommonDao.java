@@ -29,6 +29,7 @@ public abstract class CommonDao {
         }
 
     }
+    @SuppressWarnings("unchecked")
     public <T extends BaseModel, I> void update(BaseModel baseModel) throws ApplicationException {
         Dao<T, I> dao = getDao((Class<T>) baseModel.getClass());
         try {
@@ -62,7 +63,7 @@ public abstract class CommonDao {
             throw new ApplicationException("Problem z usunięciem wpisu w bazie.");
         }
     }
-
+    @SuppressWarnings("unchecked")
     public <T extends BaseModel, I> void deleteById(Class<T> cls, Integer id) throws ApplicationException {
         try {
             Dao<T, I> dao = getDao(cls);
@@ -72,7 +73,7 @@ public abstract class CommonDao {
             throw new ApplicationException("Problem z usunięciem wpisu w bazie.");
         }
     }
-
+    @SuppressWarnings("unchecked")
     public <T extends BaseModel, I> T findById(Class<T> cls, Integer id) throws ApplicationException {
         try {
             Dao<T, I> dao = getDao(cls);
@@ -84,8 +85,8 @@ public abstract class CommonDao {
     }
 
     // get DAO
+    @SuppressWarnings("unchecked")
     public <T extends BaseModel, I> Dao<T, I> getDao(Class<T> cls) throws ApplicationException {
-
         try {
             return DaoManager.createDao(connectionSource, cls);
         } catch (SQLException e) {

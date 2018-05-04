@@ -14,6 +14,7 @@ public class CarsCharacteristicsFX {
     private IntegerProperty id = new SimpleIntegerProperty();
 
     private StringProperty price = new SimpleStringProperty();
+    @SuppressWarnings("unchecked")
     private ObjectProperty<LocalDate> priceDate = new SimpleObjectProperty();
     private StringProperty transmission = new SimpleStringProperty();
     private StringProperty engCapacity = new SimpleStringProperty();

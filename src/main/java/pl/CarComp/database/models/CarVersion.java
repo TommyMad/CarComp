@@ -6,10 +6,10 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "version_table")
 public class CarVersion implements BaseModel {
 
-    public static final String FOREIGN_BRAND_ID = "FOREIGN_BRAND_ID";
-    public static final String FOREIGN_MODEL_ID = "FOREIGN_MODEL_ID";
-    public static final String FOREIGN_CAPACITY_ID = "FOREIGN_CAPACITY_ID";
-    public static final String FOREIGN_FUEL_ID = "FOREIGN_FUEL_ID";
+    private static final String FOREIGN_BRAND_ID = "FOREIGN_BRAND_ID";
+    private static final String FOREIGN_MODEL_ID = "FOREIGN_MODEL_ID";
+    private static final String FOREIGN_CAPACITY_ID = "FOREIGN_CAPACITY_ID";
+    private static final String FOREIGN_FUEL_ID = "FOREIGN_FUEL_ID";
 
     public CarVersion() {
 

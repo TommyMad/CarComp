@@ -137,8 +137,6 @@ public class CarChooserController {
                             || versionLabel.getText().equals("");
                 } catch (Exception e) {
                     DialogWindows.errorDialog(e.getMessage());
-                    System.out.println(e);
-                    // TO DO add window info or error
                 }
                 return false;
             }
@@ -170,7 +168,6 @@ public class CarChooserController {
                     this.modelsFXcontroller.initializeFilteredModelsList();
                 } catch (ApplicationException e) {
                     DialogWindows.errorDialog(e.getMessage());
-                    System.out.println(e);
                 }
 
             } else {
@@ -194,7 +191,6 @@ public class CarChooserController {
 
         } catch (Exception exc) {
             DialogWindows.errorDialog(exc.getMessage());
-            System.out.println(exc);
         }
     }
 
@@ -338,7 +334,6 @@ public class CarChooserController {
             refreshListviev0();
         } catch (ApplicationException e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
     }
 
@@ -356,7 +351,6 @@ public class CarChooserController {
             refreshListViev1();
         } catch (ApplicationException e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
     }
 
@@ -374,7 +368,6 @@ public class CarChooserController {
             refreshListViev2();
         } catch (ApplicationException e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
     }
 
@@ -392,7 +385,6 @@ public class CarChooserController {
             refreshListViev3();
         } catch (ApplicationException e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
     }
 
@@ -486,7 +478,7 @@ public class CarChooserController {
     @FXML
     public void setSelected(ActionEvent e) {
         try {
-            foreignMainController.activateAddCarButtton();
+            foreignMainController.activateAddCarButton();
             if ((foreignNextCarCompareController == null & foreignNextCarCompare2Controller == null & foreignNextCarCompare3Controller == null) || foreignCarCompareController.getIdFirstColumn() == 1) {//2,3,4 column don't exist
                 //first columns checked
                 foreignCarCompareController.setMainColumn();

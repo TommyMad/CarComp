@@ -32,103 +32,87 @@
                </AnchorPane>
            </Tab>
            <Tab fx:id="modelTab" closable="false" text="Model">
-               <content>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="350.0">
-                       <children>
-                           <ComboBox fx:id="modelChoiceComboBox" layoutX="100.0" layoutY="30.0"
-                                     onAction="#selectModelChoiceComboBox" prefWidth="150.0" promptText="Wybierz model"
-                                     AnchorPane.bottomAnchor="116.0" AnchorPane.leftAnchor="100.0"
-                                     AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0"/>
-                           <HBox layoutX="240.0" layoutY="130.0" spacing="5.0">
-                               <children>
-                                   <Button mnemonicParsing="false" onAction="#cancelButton" text="Anuluj"/>
-                                   <Button fx:id="nextTabButton2" mnemonicParsing="false" onAction="#goToNextTab2"
-                                           text="Dalej"/>
-                               </children>
-                           </HBox>
-                       </children>
-                   </AnchorPane>
-               </content>
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="350.0">
+                   <ComboBox fx:id="modelChoiceComboBox" layoutX="100.0" layoutY="30.0"
+                             onAction="#selectModelChoiceComboBox" prefWidth="150.0" promptText="Wybierz model"
+                             AnchorPane.bottomAnchor="116.0" AnchorPane.leftAnchor="100.0"
+                             AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0"/>
+                   <HBox layoutX="240.0" layoutY="130.0" spacing="5.0">
+                       <Button mnemonicParsing="false" onAction="#cancelButton" text="Anuluj"/>
+                       <Button fx:id="nextTabButton2" mnemonicParsing="false" onAction="#goToNextTab2"
+                               text="Dalej"/>
+                   </HBox>
+               </AnchorPane>
            </Tab>
            <Tab fx:id="engineTab" closable="false" text="Silnik">
-               <content>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                       <children>
-                           <Label layoutX="14.0" layoutY="14.0" text="Paliwo:"/>
-                           <HBox layoutX="240.0" layoutY="130.0" spacing="5.0">
-                               <children>
-                                   <Button mnemonicParsing="false" onAction="#cancelButton" text="Anuluj"/>
-                                   <Button fx:id="nextTabButton3" mnemonicParsing="false" onAction="#goToNextTab3"
-                                           text="Dalej"/>
-                               </children>
-                           </HBox>
-                           <Label layoutX="175.0" layoutY="14.0" text="Pojemność silnika:"/>
-                           <ComboBox fx:id="capacityChoiceComboBox" layoutX="175.0" layoutY="42.0"
-                                     onAction="#selectCapacityChoiceComboBox" prefHeight="25.0" prefWidth="100.0"
-                                     promptText="w dm3"/>
-                           <ComboBox fx:id="fuelChoiceComboBox" layoutX="14.0" layoutY="42.0"
-                                     onAction="#selectFuelChoiceComboBox" prefHeight="25.0" prefWidth="128.0"
-                                     promptText="Typ paliwa"/>
-                       </children>
-                   </AnchorPane>
-               </content>
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                   <Label layoutX="14.0" layoutY="14.0" text="Paliwo:"/>
+                   <HBox layoutX="240.0" layoutY="130.0" spacing="5.0">
+                       <Button mnemonicParsing="false" onAction="#cancelButton" text="Anuluj"/>
+                       <Button fx:id="nextTabButton3" mnemonicParsing="false" onAction="#goToNextTab3"
+                               text="Dalej"/>
+                   </HBox>
+                   <Label layoutX="175.0" layoutY="14.0" text="Pojemność silnika:"/>
+                   <ComboBox fx:id="capacityChoiceComboBox" layoutX="175.0" layoutY="42.0"
+                             onAction="#selectCapacityChoiceComboBox" prefHeight="25.0" prefWidth="100.0"
+                             promptText="w dm3"/>
+                   <ComboBox fx:id="fuelChoiceComboBox" layoutX="14.0" layoutY="42.0"
+                             onAction="#selectFuelChoiceComboBox" prefHeight="25.0" prefWidth="128.0"
+                             promptText="Typ paliwa"/>
+               </AnchorPane>
            </Tab>
            <Tab fx:id="versionTab" closable="false" text="Wersja">
-               <content>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                       <children>
-                           <HBox layoutX="220.0" layoutY="130.0" spacing="5.0">
-                               <children>
-                                   <Button mnemonicParsing="false" onAction="#cancelButton" text="Anuluj"/>
-                                   <Button fx:id="selectCarButton" mnemonicParsing="false" onAction="#setSelected"
-                                           text="Wybierz"/>
-                               </children>
-                           </HBox>
-                           <ComboBox fx:id="versionChoiceComboBox" layoutX="100.0" layoutY="30.0"
-                                     onAction="#selectVersionChoiceComboBox" prefWidth="150.0"
-                                     promptText="Wybierz wersję"/>
-                       </children>
-                   </AnchorPane>
-               </content>
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                   <HBox layoutX="220.0" layoutY="130.0" spacing="5.0">
+                       <Button mnemonicParsing="false" onAction="#cancelButton" text="Anuluj"/>
+                       <Button fx:id="selectCarButton" mnemonicParsing="false" onAction="#setSelected"
+                               text="Wybierz"/>
+                   </HBox>
+                   <ComboBox fx:id="versionChoiceComboBox" layoutX="100.0" layoutY="30.0"
+                             onAction="#selectVersionChoiceComboBox" prefWidth="150.0"
+                             promptText="Wybierz wersję"/>
+               </AnchorPane>
            </Tab>
        </TabPane>
    </center>
    <bottom>
-      <AnchorPane prefHeight="25.0" prefWidth="167.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="19.0" prefWidth="350.0" spacing="5.0">
-               <children>
-                  <Label prefHeight="19.0" prefWidth="70.0" text="Twój wybór: ">
-                     <padding>
-                        <Insets top="2.0" />
-                     </padding></Label>
-                  <Label fx:id="brandLabel">
-                     <padding>
-                        <Insets top="2.0" />
-                     </padding></Label>
-                  <Label fx:id="modelLabel">
-                     <padding>
-                        <Insets top="2.0" />
-                     </padding></Label>
-                  <Label fx:id="fuelLabel">
-                     <padding>
-                        <Insets top="2.0" />
-                     </padding></Label>
-                  <Label fx:id="capacityLabel">
-                     <padding>
-                        <Insets top="2.0" />
-                     </padding></Label>
-                  <Label fx:id="versionLabel">
-                     <padding>
-                        <Insets top="2.0" />
-                     </padding></Label>
-               </children>
+       <AnchorPane prefHeight="25.0" prefWidth="167.0" BorderPane.alignment="CENTER">
+           <HBox alignment="CENTER_LEFT" prefHeight="19.0" prefWidth="350.0" spacing="5.0">
                <padding>
-                  <Insets left="5.0" />
+                   <Insets left="5.0"/>
                </padding>
-            </HBox>
-            <Separator prefHeight="3.0" prefWidth="350.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-         </children>
-      </AnchorPane>
+               <Label prefHeight="19.0" prefWidth="70.0" text="Twój wybór: ">
+                   <padding>
+                       <Insets top="2.0"/>
+                   </padding>
+               </Label>
+               <Label fx:id="brandLabel">
+                   <padding>
+                       <Insets top="2.0"/>
+                   </padding>
+               </Label>
+               <Label fx:id="modelLabel">
+                   <padding>
+                       <Insets top="2.0"/>
+                   </padding>
+               </Label>
+               <Label fx:id="fuelLabel">
+                   <padding>
+                       <Insets top="2.0"/>
+                   </padding>
+               </Label>
+               <Label fx:id="capacityLabel">
+                   <padding>
+                       <Insets top="2.0"/>
+                   </padding>
+               </Label>
+               <Label fx:id="versionLabel">
+                   <padding>
+                       <Insets top="2.0"/>
+                   </padding>
+               </Label>
+           </HBox>
+           <Separator prefHeight="3.0" prefWidth="350.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+       </AnchorPane>
    </bottom>
 </BorderPane>

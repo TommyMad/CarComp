@@ -6,7 +6,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -34,8 +33,7 @@ public class DialogWindows {
         alertOnClose.setTitle("");
         alertOnClose.setHeaderText("Wyjście z programu");
         alertOnClose.setContentText("Czy na pewno chcesz wyjść?");
-        Optional<ButtonType> result = alertOnClose.showAndWait();
-        return result;
+        return alertOnClose.showAndWait();
     }
 
     // add confirmation when delete item from database
@@ -64,17 +62,4 @@ public class DialogWindows {
         textAreaError.setEditable(false);
         errorAlert.showAndWait();
     }
-
-    //warning message window
-    public static void informationDialog(String warn) {
-        Alert infoAlert = new Alert(AlertType.INFORMATION);
-        infoAlert.setTitle("Błąd");
-        infoAlert.setHeaderText("Uwaga, możesz maksymalnie porówmać X pojazdów!");
-
-        TextArea textAreaWarning = new TextArea(warn);
-        infoAlert.getDialogPane().setContent(textAreaWarning);
-        textAreaWarning.setEditable(false);
-        infoAlert.showAndWait();
-    }
-
 }

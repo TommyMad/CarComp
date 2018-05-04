@@ -2,7 +2,6 @@ package pl.CarComp.utils.converters;
 
 import pl.CarComp.database.models.CarBrand;
 import pl.CarComp.modelFX.BrandsFX;
-import pl.CarComp.modelFXControler.BrandsFXcontroller;
 
 public class ConverterBrand {
     public static BrandsFX convertToBrandsFX(CarBrand carBrand){

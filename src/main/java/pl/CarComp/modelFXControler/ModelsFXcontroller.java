@@ -1,6 +1,5 @@
 package pl.CarComp.modelFXControler;
 
-import com.j256.ormlite.dao.GenericRawResults;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -12,7 +11,6 @@ import pl.CarComp.database.models.CarBrand;
 import pl.CarComp.database.models.CarModel;
 import pl.CarComp.modelFX.BrandsFX;
 import pl.CarComp.modelFX.ModelsFX;
-import pl.CarComp.utils.converters.ConverterBrand;
 import pl.CarComp.utils.converters.ConverterModels;
 import pl.CarComp.utils.exceptions.ApplicationException;
 

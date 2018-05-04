@@ -11,39 +11,31 @@ import pl.CarComp.utils.FXMLutils;
 
 public class Main extends Application {
 
-    public static final String FXML_LOGIN_WINDOW = "/fxml/loginWindow.fxml";
+    private static final String FXML_LOGIN_WINDOW = "/fxml/loginWindow.fxml";
 
     public static void main(String[] args) {
-	launch(args);
-
+        launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-	try {
-	    Pane mainAnchorPane=FXMLutils.fxmlLoader(FXML_LOGIN_WINDOW);
-	    
-	    Scene scene = new Scene(mainAnchorPane);
+    public void start(Stage primaryStage) {
+        try {
+            Pane mainAnchorPane = FXMLutils.fxmlLoader(FXML_LOGIN_WINDOW);
 
-	    primaryStage.setScene(scene);
-	    primaryStage.setTitle("Witamy w CarCompare");
-	    primaryStage.setResizable(false);
-	    primaryStage.show();
-	    
-	    DBManager.initDatabase();
+            assert mainAnchorPane != null;
+            Scene scene = new Scene(mainAnchorPane);
 
-	    //initialize example data for testing only
-		DatabasewithExampleData.fillwithExamples();
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Witamy w CarCompare");
+            primaryStage.setResizable(false);
+            primaryStage.show();
 
+            DBManager.initDatabase();
+            //initialize example data for testing only
+            DatabasewithExampleData.fillwithExamples();
 
-	} catch (Exception e) {
-	    DialogWindows.errorDialog(e.getMessage());
-	    System.out.println(e);
-	    e.printStackTrace();
-	}
-	
-
+        } catch (Exception e) {
+            DialogWindows.errorDialog(e.getMessage());
+        }
     }
-    
-
 }

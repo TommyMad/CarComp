@@ -43,7 +43,7 @@ public class NextCarCompare2Controller {
         MainController.setForeignNextCarCompare2Controller(this);
         CarChooserController.setForeignNextCarCompare2Controller(this);
         setIdentifyColumnForChangeCar(0);
-        System.out.println("drugi Next change is "+getIdentifyColumnForChangeCar());
+        //System.out.println("secong Next change is "+getIdentifyColumnForChangeCar());
     }
 
     //delete one chosen column
@@ -53,11 +53,10 @@ public class NextCarCompare2Controller {
             foreignCarCompareController.getMainHbox().getChildren().remove(nextGridPane);
             //nextGridPane.getChildren().clear();
             foreignMainController.getListOfGridPaneColumns().remove(nextGridPane);
-            System.out.println("wielkosc po usunieciu: " + foreignMainController.getListOfGridPaneColumns().size());
+            //System.out.println("size after removing: " + foreignMainController.getListOfGridPaneColumns().size());
             setIdentifyColumnForDelete(1);
         } catch (Exception e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
     }
 
@@ -79,10 +78,6 @@ public class NextCarCompare2Controller {
     public void changeCar() {
         foreignMainController.loadCarChooserWindow();
         setIdentifyColumnForChangeCar(1);
-        System.out.println("wlacz 2 kolumne: " + identifyColumnForChangeCar);
-    }
-
-    public void editCarData() {
     }
 
     public Label getNextSelectedCarTitleLabel() {

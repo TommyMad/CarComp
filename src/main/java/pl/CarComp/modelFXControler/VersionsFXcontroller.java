@@ -4,7 +4,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.sqlite.core.DB;
 import pl.CarComp.database.dao.*;
 import pl.CarComp.database.dbUtils.DBManager;
 import pl.CarComp.database.models.*;

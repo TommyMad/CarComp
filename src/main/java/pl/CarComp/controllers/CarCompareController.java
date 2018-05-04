@@ -1,7 +1,5 @@
 package pl.CarComp.controllers;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -9,16 +7,14 @@ import javafx.scene.layout.*;
 import pl.CarComp.controllers.controllersDubler.NextCarCompare2Controller;
 import pl.CarComp.controllers.controllersDubler.NextCarCompare3Controller;
 import pl.CarComp.controllers.controllersDubler.NextCarCompareController;
-import pl.CarComp.database.models.CarsCharacteristic;
 import pl.CarComp.modelFXControler.CarsCharacteristicsFXcontroller;
 import pl.CarComp.utils.DialogWindows;
-import pl.CarComp.utils.exceptions.ApplicationException;
 
 
 public class CarCompareController {
     public static final String FXML_CAR_CHOOSE_WINDOW_FXML = "/fxml/carChooseWindow.fxml";
     public static final String FXML_CAR_COMPARE_WINDOW_FXML = "/fxml/CarCompareWindow.fxml";
-    public static final String FXML_NEXT_CAR_COMPARE_WINDOW_FXML = "/fxml/nextCarCompareWindow.fxml";
+    private static final String FXML_NEXT_CAR_COMPARE_WINDOW_FXML = "/fxml/nextCarCompareWindow.fxml";
 
 
     private CarsCharacteristicsFXcontroller carsCharacteristicsFXcontroller;
@@ -28,10 +24,6 @@ public class CarCompareController {
     private GridPane gridPaneCarCompare;
     @FXML
     private HBox mainHbox;
-    @FXML
-    private Accordion accordion;
-    @FXML
-    private TitledPane tilted;
     @FXML
     private ListView <String> priceListViev0,engineListViev0,speedListViev0,dimensionListviev0,fuelListviev0;
 
@@ -101,7 +93,6 @@ public class CarCompareController {
 
         } catch (Exception e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
         mainHbox.getChildren().add(tempGrid);
     }
@@ -111,10 +102,6 @@ public class CarCompareController {
         foreignMainController.loadCarChooserWindow();
         //turn id ON
         setIdFirstColumn(1);
-    }
-
-    @FXML
-    public void editCarData() {
     }
 
     public Label getSelectedCarTitleLabel() {

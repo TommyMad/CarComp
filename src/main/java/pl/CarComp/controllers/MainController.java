@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -22,13 +21,11 @@ import pl.CarComp.controllers.controllersDubler.NextCarCompare3Controller;
 import pl.CarComp.controllers.controllersDubler.NextCarCompareController;
 import pl.CarComp.utils.DialogWindows;
 
-import java.util.ArrayList;
-import java.util.ListIterator;
 import java.util.Optional;
 
 public class MainController {
 
-    public static final String FXML_CAR_ADD_WINDOW_FXML = "/fxml/carAddWindow.fxml";
+    private static final String FXML_CAR_ADD_WINDOW_FXML = "/fxml/carAddWindow.fxml";
     public static final String FXML_CAR_CHOOSE_WINDOW_FXML = "/fxml/carChooseWindow.fxml";
     public static final String FXML_CAR_COMPARE_WINDOW_FXML = "/fxml/carCompareWindow.fxml";
     public static final String FXML_NEXT_CAR_COMPARE_WINDOW_FXML = "/fxml/nextCarCompareWindow.fxml";
@@ -114,7 +111,6 @@ public class MainController {
             parent = loader.load();
         } catch (Exception ex) {
             DialogWindows.errorDialog(ex.getMessage());
-            System.out.println(ex);
         }
         mainBorderP.setCenter(parent);
     }
@@ -134,7 +130,6 @@ public class MainController {
             stage.show();
         } catch (Exception e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
     }
 
@@ -172,7 +167,7 @@ public class MainController {
             }
         }
 
-        System.out.println("wielkosc listy nodow: " + listOfGridPaneColumns.size());
+        //System.out.println("node list size: " + listOfGridPaneColumns.size());
     }
 
     private void loadNewNextWindow(FXMLLoader loader) {
@@ -182,14 +177,13 @@ public class MainController {
 
         } catch (Exception e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
         foreign2CarCompareController.getMainHbox().getChildren().add(tempGrid);
         loadCarChooserWindow();
     }
 
     //activate add button after choosing car in CarChooser
-    public void activateAddCarButtton() {
+    public void activateAddCarButton() {
         addNextCarButton.setDisable(false);
         addNextCarButton.setVisible(true);
     }
@@ -211,14 +205,7 @@ public class MainController {
 
         } catch (Exception e) {
             DialogWindows.errorDialog(e.getMessage());
-            System.out.println(e);
         }
-    }
-
-    @FXML
-    public void setComparisiontoDefault() {
-        //add method
-
     }
 
     public ObservableList<Node> getListOfGridPaneColumns() {
@@ -227,10 +214,6 @@ public class MainController {
 
     public void setListOfGridPaneColumns(ObservableList<Node> listOfGridPaneColumns) {
         this.listOfGridPaneColumns = listOfGridPaneColumns;
-    }
-
-    public Button getAddNextCarButton() {
-        return addNextCarButton;
     }
 
     public void setAddNextCarButton(Button addNextCarButton) {

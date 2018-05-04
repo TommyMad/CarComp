@@ -45,7 +45,7 @@ public class CarAddEditController {
         /*
          * init ** FX controllers and methods from it
          * */
-        this.brandsFXcontroller = new BrandsFXcontroller();//dodac wyjatki
+        this.brandsFXcontroller = new BrandsFXcontroller();
         this.modelsFXcontroller = new ModelsFXcontroller();
         this.fuelsFXcontroller = new FuelsFXcontroller();
         this.capacitiesFXcontroller = new CapacitiesFXcontroller();
@@ -271,21 +271,6 @@ public class CarAddEditController {
             DialogWindows.errorDialog(e.getMessage());
         }
         versionNameTextF.clear();
-    }
-
-    private void deleteSelectedBrand() {
-    }
-
-    private void deleteSelectedModel() {
-    }
-
-    private void deleteSelectedFuel() {
-    }
-
-    private void deleteSelectedCapacity() {
-    }
-
-    private void deleteSelectedVersion() {
     }
 
 

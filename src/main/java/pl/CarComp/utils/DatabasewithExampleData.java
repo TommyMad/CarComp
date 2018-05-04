@@ -302,8 +302,7 @@ public class DatabasewithExampleData {
             carsCharacteristicsDao.createOrUpdate(carsCharacteristic4);
             carsCharacteristicsDao.createOrUpdate(carsCharacteristic5);
         } catch (ApplicationException e) {
-            e.printStackTrace();
-            System.out.println(e);
+            DialogWindows.errorDialog(e.getMessage());
         }
         DBManager.closeConnectionSource();
     }

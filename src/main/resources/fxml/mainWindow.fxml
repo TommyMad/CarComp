@@ -18,118 +18,90 @@
 
 <BorderPane fx:id="mainBorderP" prefHeight="850.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.CarComp.controllers.MainController">
    <top>
-      <AnchorPane prefHeight="68.0" prefWidth="700.0" BorderPane.alignment="CENTER">
-         <children>
-            <MenuBar fx:id="mainMenuBar" layoutY="2.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="Plik">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#closeAppMenuButton" text="Zamknij" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Opcje">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Pomoc">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#showAboutInformation" text="O programie" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-            <VBox layoutY="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <children>
-                  <ToolBar prefHeight="50.0" prefWidth="700.0">
-                    <items>
-                        <Button mnemonicParsing="false" onAction="#showAboutInformation" prefHeight="40.0" prefWidth="50.0" text="Info" />
-                        <Button mnemonicParsing="false" onAction="#openAddCarToBase" prefHeight="40.0" text="Dodaj do bazy" />
-                    </items>
-                  </ToolBar>
-               </children>
-            </VBox>
-         </children>
-      </AnchorPane>
+       <AnchorPane prefHeight="68.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+           <MenuBar fx:id="mainMenuBar" layoutY="2.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="700.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <Menu mnemonicParsing="false" text="Plik">
+                   <MenuItem mnemonicParsing="false" onAction="#closeAppMenuButton" text="Zamknij"/>
+               </Menu>
+               <Menu mnemonicParsing="false" text="Opcje">
+                   <MenuItem mnemonicParsing="false" text="Delete"/>
+               </Menu>
+               <Menu mnemonicParsing="false" text="Pomoc">
+                   <MenuItem mnemonicParsing="false" onAction="#showAboutInformation" text="O programie"/>
+               </Menu>
+           </MenuBar>
+           <VBox layoutY="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <ToolBar prefHeight="50.0" prefWidth="700.0">
+                   <Button mnemonicParsing="false" onAction="#showAboutInformation" prefHeight="40.0"
+                           prefWidth="50.0" text="Info"/>
+                   <Button mnemonicParsing="false" onAction="#openAddCarToBase" prefHeight="40.0"
+                           text="Dodaj do bazy"/>
+               </ToolBar>
+           </VBox>
+       </AnchorPane>
    </top>
    <left>
-      <HBox prefWidth="146.0">
-         <children>
-            <VBox prefHeight="722.0" prefWidth="140.0">
-               <children>
-                  <Button fx:id="addNextCarButton" mnemonicParsing="false" onAction="#addNextCar" prefWidth="95.0" text="Dodaj kolejny">
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Accordion prefHeight="704.0" prefWidth="140.0">
-                    <panes>
-                      <TitledPane animated="false" prefHeight="706.0" prefWidth="140.0" text="Legenda">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="683.0" prefWidth="138.0">
-                                 <children>
-                                    <VBox layoutX="12.0" layoutY="142.0" spacing="6.0">
-                                       <children>
-                                          <Label text="Cena" />
-                                          <Label text="Data cennika" />
-                                       </children>
-                                    </VBox>
-                                    <VBox layoutX="12.0" layoutY="195.0" spacing="6.0">
-                                       <children>
-                                          <Label text="Pojemność silnika" />
-                                          <Label text="Typ silnika" />
-                                           <Label text="Liczba cylindrów" />
-                                           <Label text="Rodzaj skrzyni biegów" />
-                                           <Label text="Liczba biegów" />
-                                           <Label text="Moc silnika" />
-                                           <Label text="Moment obrotowy" />
-                                       </children>
-                                    </VBox>
-                                    <VBox layoutX="12.0" layoutY="519.0" prefHeight="126.0" prefWidth="115.0" spacing="6.0">
-                                       <children>
-                                           <Label text="Masa pojazdu" />
-                                           <Label text="Długość" />
-                                           <Label text="Wysokość" />
-                                           <Label text="Szerokość" />
-                                           <Label text="Rozstaw osi" />
-                                           <Label text="Pojemnosc bagażnika" />
-                                           <Label text="Liczba drzwi" />
-                                       </children>
-                                    </VBox>
-                                    <VBox layoutX="12.0" layoutY="419.0" spacing="6.0">
-                                       <children>
-                                           <Label text="Pojemność baku" />
-                                           <Label text="Spalania (miasto)" />
-                                           <Label text="Spalanie (trasa)" />
-                                           <Label text="Spalanie średnie" />
-                                       </children>
-                                    </VBox>
-                                    <VBox layoutX="12.0" layoutY="367.0" spacing="6.0">
-                                       <children>
-                                           <Label text="Przyspieszenie" />
-                                           <Label text="Prędkość maksymalna" />
-                                       </children>
-                                    </VBox>
+       <HBox prefWidth="146.0">
+           <VBox prefHeight="722.0" prefWidth="140.0">
+               <Button fx:id="addNextCarButton" mnemonicParsing="false" onAction="#addNextCar" prefWidth="95.0"
+                       text="Dodaj kolejny">
+                   <VBox.margin>
+                       <Insets bottom="10.0" top="10.0"/>
+                   </VBox.margin>
+               </Button>
+               <Accordion prefHeight="704.0" prefWidth="140.0">
+                   <panes>
+                       <TitledPane animated="false" prefHeight="706.0" prefWidth="140.0" text="Legenda">
+                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="683.0" prefWidth="138.0">
+                               <VBox layoutX="12.0" layoutY="142.0" spacing="6.0">
+                                   <Label text="Cena"/>
+                                   <Label text="Data cennika"/>
+                               </VBox>
+                               <VBox layoutX="12.0" layoutY="195.0" spacing="6.0">
+                                   <Label text="Pojemność silnika"/>
+                                   <Label text="Typ silnika"/>
+                                   <Label text="Liczba cylindrów"/>
+                                   <Label text="Rodzaj skrzyni biegów"/>
+                                   <Label text="Liczba biegów"/>
+                                   <Label text="Moc silnika"/>
+                                   <Label text="Moment obrotowy"/>
+                               </VBox>
+                               <VBox layoutX="12.0" layoutY="519.0" prefHeight="126.0" prefWidth="115.0"
+                                     spacing="6.0">
+                                   <Label text="Masa pojazdu"/>
+                                   <Label text="Długość"/>
+                                   <Label text="Wysokość"/>
+                                   <Label text="Szerokość"/>
+                                   <Label text="Rozstaw osi"/>
+                                   <Label text="Pojemnosc bagażnika"/>
+                                   <Label text="Liczba drzwi"/>
+                               </VBox>
+                               <VBox layoutX="12.0" layoutY="419.0" spacing="6.0">
+                                   <Label text="Pojemność baku"/>
+                                   <Label text="Spalania (miasto)"/>
+                                   <Label text="Spalanie (trasa)"/>
+                                   <Label text="Spalanie średnie"/>
+                               </VBox>
+                               <VBox layoutX="12.0" layoutY="367.0" spacing="6.0">
+                                   <Label text="Przyspieszenie"/>
+                                   <Label text="Prędkość maksymalna"/>
+                               </VBox>
 
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </TitledPane>
-                    </panes>
-                  </Accordion>
-               </children>
-            </VBox>
-            <Separator orientation="VERTICAL" prefWidth="5.0" />
-         </children>
-      </HBox>
+                           </AnchorPane>
+                       </TitledPane>
+                   </panes>
+               </Accordion>
+           </VBox>
+           <Separator orientation="VERTICAL" prefWidth="5.0"/>
+       </HBox>
    </left>
    <center>
-      <AnchorPane fx:id="centerPane">
-         <children>
-            <ImageView fitHeight="657.0" fitWidth="960.0" pickOnBounds="true" preserveRatio="true" />
-            <Button layoutX="447.0" layoutY="60.0" mnemonicParsing="false" onAction="#openCarChooserWindow" text="Porównaj" />
-         </children>
-      </AnchorPane>
+       <AnchorPane fx:id="centerPane">
+           <ImageView fitHeight="657.0" fitWidth="960.0" pickOnBounds="true" preserveRatio="true"/>
+           <Button layoutX="447.0" layoutY="60.0" mnemonicParsing="false" onAction="#openCarChooserWindow"
+                   text="Porównaj"/>
+       </AnchorPane>
    
    </center>
    <bottom>
