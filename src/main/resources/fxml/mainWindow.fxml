@@ -24,9 +24,6 @@
                <Menu mnemonicParsing="false" text="Plik">
                    <MenuItem mnemonicParsing="false" onAction="#closeAppMenuButton" text="Zamknij"/>
                </Menu>
-               <Menu mnemonicParsing="false" text="Opcje">
-                   <MenuItem mnemonicParsing="false" text="Delete"/>
-               </Menu>
                <Menu mnemonicParsing="false" text="Pomoc">
                    <MenuItem mnemonicParsing="false" onAction="#showAboutInformation" text="O programie"/>
                </Menu>

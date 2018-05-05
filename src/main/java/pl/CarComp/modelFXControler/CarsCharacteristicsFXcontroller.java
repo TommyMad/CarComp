@@ -135,7 +135,7 @@ public class CarsCharacteristicsFXcontroller {
     public void deleteCar() throws ApplicationException {
         CarsCharacteristicsDao carsCharacteristicsDao = new CarsCharacteristicsDao(DBManager.getConnectionSource());
         carsCharacteristicsDao.deleteById(CarsCharacteristic.class, this.getCarsCharacteristicsFXObjectProperty().getId());
-        System.out.println("id "+this.getCarsCharacteristicsFXObjectProperty().getId());
+        //System.out.println("id "+this.getCarsCharacteristicsFXObjectProperty().getId());
 
         //CarVersionDao carVersionDao=new CarVersionDao(DBManager.getConnectionSource());
         //carVersionDao=carVersionDao.deleteById(CarVersion.class,);

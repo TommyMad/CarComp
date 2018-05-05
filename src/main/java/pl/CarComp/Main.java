@@ -35,8 +35,9 @@ public class Main extends Application {
             primaryStage.show();
 
             DBManager.initDatabase();
+
             //initialize example data for testing only
-            DatabasewithExampleData.fillwithExamples();
+            //DatabasewithExampleData.fillwithExamples();
 
         } catch (Exception e) {
             DialogWindows.errorDialog(e.getMessage());

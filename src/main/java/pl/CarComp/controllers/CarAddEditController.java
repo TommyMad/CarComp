@@ -38,6 +38,7 @@ public class CarAddEditController {
     private ComboBox<VersionsFX> versionChoiceComboBox2;
     @FXML
     private Button saveDataButton, deleteDataButton, addBrandButton, addModelButton, addFuelButton, addCapacityButton, addVersionButton, deleteBrandButton, deleteModelButton, deleteFuelButton, deleteCapacityButton, deleteVersionButton;
+    private CarsCharacteristicsFX extractCarsCharacteristicsFX;
 
 
     @FXML
@@ -57,7 +58,7 @@ public class CarAddEditController {
             this.fuelsFXcontroller.initializeFuelsList();
             this.capacitiesFXcontroller.initializeCapacitiesList();
             this.versionsFXcontroller.initializeVersionsList();
-           // this.carsCharacteristicsFXcontroller.initCarsCharacteristicFXcontroller();
+            // this.carsCharacteristicsFXcontroller.initCarsCharacteristicFXcontroller();
             initBindings();
             initBindingsForMainCategories();
             propertyBindings();
@@ -186,7 +187,7 @@ public class CarAddEditController {
         } else {
             try {
                 this.carsCharacteristicsFXcontroller.initFilteredListCarsCharacteristic();
-                    setTextFieldsCharactersitics();
+                setTextFieldsCharactersitics();
             } catch (ApplicationException e) {
                 DialogWindows.errorDialog(e.getMessage());
             }
@@ -196,30 +197,33 @@ public class CarAddEditController {
 
     private void setTextFieldsCharactersitics() {
         int lastIndex = carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().size() - 1;
-        if(lastIndex>0){
-        priceTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getPrice());
-        datePickerField.getEditor().setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getPriceDate().toString());
-        gearboxTypeTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getTransmission());
-        gearboxSizeTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getGearboxSize());
-        engineCapacityTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getEngCapacity());
-        engineTypeTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getEngType());
-        cylindersTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getCylinders());
-        powerMaxTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getEngPower());
-        torqueMaxTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getTorque());
-        cityFuelTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getFuelConsCity());
-        roadFuelTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getFuelConsRoute());
-        fuelNormalTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getFuelConsMixed());
-        tankCapacityTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getTankCapacity());
-        accelerationTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getAcceleration());
-        speedTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getTopSpeed());
-        lenghtTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getLenght());
-        widthTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getWidth());
-        heightTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getHeight());
-        wheelbaseTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getWheeelbase());
-        trunkTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getTrunk());
-        doorsTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getDoors());
-        weightTF.setText(carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex).getWeight());
-    }}
+        if (lastIndex >= 0) {
+            extractCarsCharacteristicsFX = carsCharacteristicsFXcontroller.getCarsCharacteristicsFXObservableList().get(lastIndex);
+            priceTF.setText(extractCarsCharacteristicsFX.getPrice());
+            datePickerField.getEditor().setText(extractCarsCharacteristicsFX.getPriceDate().toString());
+            gearboxTypeTF.setText(extractCarsCharacteristicsFX.getTransmission());
+            gearboxSizeTF.setText(extractCarsCharacteristicsFX.getGearboxSize());
+            engineCapacityTF.setText(extractCarsCharacteristicsFX.getEngCapacity());
+            engineTypeTF.setText(extractCarsCharacteristicsFX.getEngType());
+            cylindersTF.setText(extractCarsCharacteristicsFX.getCylinders());
+            powerMaxTF.setText(extractCarsCharacteristicsFX.getEngPower());
+            torqueMaxTF.setText(extractCarsCharacteristicsFX.getTorque());
+            cityFuelTF.setText(extractCarsCharacteristicsFX.getFuelConsCity());
+            roadFuelTF.setText(extractCarsCharacteristicsFX.getFuelConsRoute());
+            fuelNormalTF.setText(extractCarsCharacteristicsFX.getFuelConsMixed());
+            tankCapacityTF.setText(extractCarsCharacteristicsFX.getTankCapacity());
+            accelerationTF.setText(extractCarsCharacteristicsFX.getAcceleration());
+            speedTF.setText(extractCarsCharacteristicsFX.getTopSpeed());
+            lenghtTF.setText(extractCarsCharacteristicsFX.getLenght());
+            widthTF.setText(extractCarsCharacteristicsFX.getWidth());
+            heightTF.setText(extractCarsCharacteristicsFX.getHeight());
+            wheelbaseTF.setText(extractCarsCharacteristicsFX.getWheeelbase());
+            trunkTF.setText(extractCarsCharacteristicsFX.getTrunk());
+            doorsTF.setText(extractCarsCharacteristicsFX.getDoors());
+            weightTF.setText(extractCarsCharacteristicsFX.getWeight());
+        }
+    }
+
     @FXML
     public void addNewBrand() {
         try {
